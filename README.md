@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Financeiro — FG Levabolli</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0e0e0e;--surface:#161616;--card:#1c1c1c;--border:#2a2a2a;
+  --text:#f0ede8;--muted:#666;--mid:#999;
+  --green:#4ade80;--green-bg:rgba(74,222,128,0.08);
+  --amber:#fbbf24;--amber-bg:rgba(251,191,36,0.08);
+  --red:#f87171;--red-bg:rgba(248,113,113,0.08);
+  --blue:#60a5fa;--gold:#c9a84c;
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2rem;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;letter-spacing:0.06em;}
+.logo span{color:var(--gold);}
+.topbar-right{display:flex;gap:0.6rem;align-items:center;}
+.btn-add{background:var(--gold);color:#0e0e0e;border:none;padding:0.4rem 1rem;font-family:'Syne',sans-serif;font-weight:700;font-size:0.75rem;cursor:pointer;}
+.btn-add:hover{background:#e8c96a;}
+.filter-tabs{display:flex;gap:2px;}
+.ftab{background:var(--card);border:1px solid var(--border);padding:0.3rem 0.8rem;font-size:0.72rem;font-family:'DM Mono',monospace;cursor:pointer;color:var(--muted);transition:all 0.15s;}
+.ftab.active{background:var(--text);color:var(--bg);}
+.ftab:hover:not(.active){color:var(--text);}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
+.stat{background:var(--surface);padding:1.2rem 1.5rem;}
+.stat-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem;}
+.stat-val{font-family:'Syne',sans-serif;font-weight:800;font-size:1.9rem;line-height:1;}
+.stat-val.green{color:var(--green);}
+.stat-val.amber{color:var(--amber);}
+.stat-val.red{color:var(--red);}
+.stat-val.blue{color:var(--blue);}
+.stat-sub{font-size:0.7rem;color:var(--muted);margin-top:0.3rem;}
+.stat-bar{height:2px;background:var(--border);margin-top:0.8rem;}
+.stat-bar-fill{height:100%;transition:width 0.8s ease;}
+.layout{display:grid;grid-template-columns:1fr 300px;}
+.main-area{border-right:1px solid var(--border);}
+.section-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.section-title{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;}
+.search-box{background:var(--card);border:1px solid var(--border);padding:0.35rem 0.7rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.78rem;outline:none;width:200px;}
+.search-box:focus{border-color:var(--gold);}
+.search-box::placeholder{color:var(--muted);}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+thead th{padding:0.6rem 1rem;text-align:left;font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border);background:var(--surface);white-space:nowrap;}
+tbody tr{border-bottom:1px solid #1e1e1e;cursor:pointer;transition:background 0.1s;}
+tbody tr:hover{background:var(--card);}
+tbody td{padding:0.7rem 1rem;white-space:nowrap;}
+.td-placa{font-family:'DM Mono',monospace;font-size:0.72rem;background:var(--card);padding:0.15rem 0.4rem;border:1px solid var(--border);}
+.td-val{font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;}
+.badge{display:inline-flex;align-items:center;gap:0.3rem;padding:0.2rem 0.5rem;font-size:0.62rem;font-family:'DM Mono',monospace;white-space:nowrap;}
+.badge-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(74,222,128,0.2);}
+.badge-amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(251,191,36,0.2);}
+.badge-red{background:var(--red-bg);color:var(--red);border:1px solid rgba(248,113,113,0.2);}
+.dot{width:5px;height:5px;border-radius:50%;display:inline-block;}
+.dot-green{background:var(--green);}
+.dot-amber{background:var(--amber);}
+.dot-red{background:var(--red);}
+.sidebar{padding:1.5rem;}
+.sb-title{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);}
+.sidebar-block{margin-bottom:2rem;}
+.fatura-item{background:var(--card);border:1px solid var(--border);padding:0.8rem;margin-bottom:0.5rem;border-left:3px solid var(--amber);}
+.fatura-item.urgent{border-left-color:var(--red);}
+.fi-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.3rem;}
+.fi-cliente{font-size:0.78rem;font-weight:500;}
+.fi-val{font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:var(--amber);}
+.fi-val.urgent{color:var(--red);}
+.fi-detail{font-size:0.68rem;color:var(--muted);}
+.pais-card{background:var(--card);border:1px solid var(--border);padding:1rem;margin-bottom:0.6rem;}
+.pais-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;}
+.pais-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;}
+.pais-total{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--gold);}
+.pais-row{display:flex;justify-content:space-between;font-size:0.72rem;padding:0.25rem 0;}
+.pais-row-label{color:var(--muted);}
+.pais-row-val{font-family:'DM Mono',monospace;}
+.pais-row-val.green{color:var(--green);}
+.pais-row-val.amber{color:var(--amber);}
+.pais-bar{height:3px;background:var(--border);margin-top:0.7rem;}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+.overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--surface);border:1px solid var(--border);width:580px;max-width:95vw;max-height:90vh;overflow-y:auto;transform:translateY(16px);transition:transform 0.25s;}
+.overlay.open .modal{transform:translateY(0);}
+.modal-head{background:var(--card);padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;}
+.modal-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;}
+.modal-close{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;}
+.modal-body{padding:1.5rem;display:flex;flex-direction:column;gap:1rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;}
+.form-row.triple{grid-template-columns:1fr 1fr 1fr;}
+.form-row.single{grid-template-columns:1fr;}
+.fg{display:flex;flex-direction:column;gap:0.3rem;}
+.fl{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
+.fi{background:var(--bg);border:1px solid var(--border);padding:0.6rem 0.8rem;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--text);outline:none;width:100%;}
+.fi:focus{border-color:var(--gold);}
+.fi::placeholder{color:#444;}
+select.fi option{background:var(--surface);}
+.modal-foot{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:0.6rem;justify-content:flex-end;}
+.btn-cancel{background:none;border:1px solid var(--border);padding:0.5rem 1.2rem;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:var(--muted);cursor:pointer;}
+.btn-save{background:var(--gold);border:none;padding:0.5rem 1.5rem;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:#0e0e0e;cursor:pointer;}
+.btn-save:hover{background:#e8c96a;}
+.empty{padding:3rem;text-align:center;color:var(--muted);font-size:0.82rem;}
+@media(max-width:900px){.layout{grid-template-columns:1fr;}.stats{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">FG <span>LEVABOLLI</span> · Finanças</div>
+  <div class="topbar-right">
+    <div class="filter-tabs">
+      <div class="ftab active" onclick="setFilter('todos',this)">Todos</div>
+      <div class="ftab" onclick="setFilter('FR',this)">🇫🇷 França</div>
+      <div class="ftab" onclick="setFilter('IT',this)">🇮🇹 Itália</div>
+      <div class="ftab" onclick="setFilter('OUT',this)">🌍 Outro</div>
+    </div>
+    <button class="btn-add" onclick="abrirModal()">+ NOVO TRABALHO</button>
+  </div>
+</div>
+
+<div class="stats" id="stats-row"></div>
+
+<div class="layout">
+  <div class="main-area">
+    <div class="section-header">
+      <div class="section-title" id="table-label">Todos os trabalhos</div>
+      <input class="search-box" id="search" placeholder="Buscar placa, cliente, marca..." oninput="render()">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th></th><th>Cliente</th><th>Sem.</th><th>Data</th>
+            <th>Marca / Placa</th><th>Serviço</th><th>Montagem</th>
+            <th>Líquido</th><th>Pagamento</th><th>Fatura</th>
+            <th>Data Fatura</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="empty" id="empty-msg" style="display:none">Nenhum trabalho encontrado.</div>
+    </div>
+  </div>
+  <div class="sidebar">
+    <div class="sidebar-block">
+      <div class="sb-title">⚠ Pendências</div>
+      <div id="faturas-list"></div>
+    </div>
+    <div class="sidebar-block">
+      <div class="sb-title">Por País</div>
+      <div id="paises-resumo"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="fecharOverlay(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="modal-title">NOVO TRABALHO</div>
+      <button class="modal-close" onclick="fecharModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="fg"><label class="fl">País</label>
+          <select class="fi" id="f-pais">
+            <option value="FR">🇫🇷 França</option>
+            <option value="IT">🇮🇹 Itália</option>
+            <option value="OUT">🌍 Outro</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Cliente / Local</label><input class="fi" id="f-cliente" placeholder="Ex: PDR TEAM"></div>
+      </div>
+      <div class="form-row triple">
+        <div class="fg"><label class="fl">Semana</label><input class="fi" id="f-semana" type="number" placeholder="39"></div>
+        <div class="fg"><label class="fl">Data Serviço</label><input class="fi" id="f-data" type="date"></div>
+        <div class="fg"><label class="fl">Marca</label><input class="fi" id="f-marca" placeholder="Renault"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label class="fl">Placa</label><input class="fi" id="f-placa" placeholder="AB 123 CD" style="text-transform:uppercase"></div>
+        <div class="fg"><label class="fl">Status</label>
+          <select class="fi" id="f-status"><option value="APROVADO">✅ Aprovado</option><option value="AGUARDANDO">⏳ Aguardando</option></select></div>
+      </div>
+      <div class="form-row triple">
+        <div class="fg"><label class="fl">Valor Serviço (€)</label><input class="fi" id="f-servico" type="number" step="0.01" placeholder="0.00" oninput="calcLiquido()"></div>
+        <div class="fg"><label class="fl">Valor Montagem (€)</label><input class="fi" id="f-montagem" type="number" step="0.01" placeholder="0.00" oninput="calcLiquido()"></div>
+        <div class="fg"><label class="fl">Líquido (€)</label><input class="fi" id="f-liquido" type="number" step="0.01" placeholder="0.00" style="color:var(--gold);font-weight:700" readonly></div>
+      </div>
+      <div class="form-row triple">
+        <div class="fg"><label class="fl">Fatura</label>
+          <select class="fi" id="f-fatura"><option value="NAO">Não feita</option><option value="FEITA">Feita</option></select></div>
+        <div class="fg"><label class="fl">N° Fatura</label><input class="fi" id="f-nfatura" placeholder="40"></div>
+        <div class="fg"><label class="fl">Data Fatura</label><input class="fi" id="f-datafatura" type="date"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label class="fl">Pagamento</label>
+          <select class="fi" id="f-pagamento"><option value="Aguardando">⏳ Aguardando</option><option value="Pago">✅ Pago</option></select></div>
+        <div class="fg"><label class="fl">Data Pagamento</label><input class="fi" id="f-datapag" type="date"></div>
+      </div>
+      <div class="form-row single">
+        <div class="fg"><label class="fl">Notas</label><input class="fi" id="f-notas" placeholder="Observações opcionais..."></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvar()">SALVAR</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let editingId=null, activeFilter='todos';
+let trabalhos=[
+  {id:1,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Fiat',placa:'FE 883 HV',servico:200,montagem:60,liquido:260,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
+  {id:2,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Peugeot',placa:'GY 490 WB',servico:426.80,montagem:60,liquido:486.80,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
+  {id:3,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Volvo',placa:'GM 365 QW',servico:279.36,montagem:72,liquido:351.36,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
+  {id:4,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Renault',placa:'HC 446 KY',servico:920,montagem:48,liquido:968,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
+  {id:5,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Peugeot',placa:'EB 412 FD',servico:1150,montagem:60,liquido:1210,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
+  {id:6,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Dacia',placa:'FR 358 PR',servico:332,montagem:60,liquido:392,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
+  {id:7,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Peugeot',placa:'GV 645 YJ',servico:920,montagem:60,liquido:980,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
+  {id:8,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Renault',placa:'EV 908 PS',servico:1400,montagem:72,liquido:1472,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
+  {id:9,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Volkswagen',placa:'GA 531 ZW',servico:1052,montagem:64,liquido:1116,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
+  {id:10,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Citroen',placa:'GT 086 CP',servico:960,montagem:52,liquido:1012,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
+  {id:11,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Peugeot',placa:'GV 731 DJ',servico:1150,montagem:60,liquido:1210,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
+  {id:12,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Mazda',placa:'GM 759 QP',servico:820,montagem:60,liquido:880,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
+  {id:13,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'BMW',placa:'HD 107 CV',servico:920,montagem:60,liquido:980,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
+  {id:14,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Mazda',placa:'FG 264 PB',servico:920,montagem:72,liquido:992,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
+  {id:15,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Dacia',placa:'GZ 522 YL',servico:172,montagem:60,liquido:232,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
+  {id:16,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Renault',placa:'EX 182 GM',servico:440,montagem:72,liquido:512,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
+  {id:17,pais:'FR',cliente:'PDR TEAM',semana:36,data:'2025-09-26',marca:'Suzuki',placa:'FP 729 XS',servico:600,montagem:52,liquido:652,status:'APROVADO',fatura:'FEITA',nfatura:'36',dataFatura:'2025-09-26',pagamento:'Pago',dataPag:'',notas:''},
+  {id:18,pais:'FR',cliente:'PDR TEAM',semana:36,data:'2025-09-26',marca:'Renault',placa:'GV 259 VS',servico:600,montagem:60,liquido:660,status:'APROVADO',fatura:'FEITA',nfatura:'36',dataFatura:'2025-09-26',pagamento:'Pago',dataPag:'',notas:''},
+  {id:19,pais:'FR',cliente:'PDR TEAM',semana:36,data:'2025-09-26',marca:'Kia',placa:'GJ 760 JH',servico:172,montagem:60,liquido:232,status:'APROVADO',fatura:'FEITA',nfatura:'36',dataFatura:'2025-09-26',pagamento:'Pago',dataPag:'',notas:''},
+  {id:20,pais:'FR',cliente:'PDR TEAM',semana:36,data:'2025-09-26',marca:'Fiat',placa:'EY 406 WH',servico:880,montagem:60,liquido:940,status:'APROVADO',fatura:'FEITA',nfatura:'36',dataFatura:'2025-09-26',pagamento:'Pago',dataPag:'',notas:''},
+  {id:21,pais:'FR',cliente:'PDR TEAM',semana:35,data:'2025-09-26',marca:'Lexus',placa:'ER 653 VX',servico:1060,montagem:60,liquido:1120,status:'APROVADO',fatura:'FEITA',nfatura:'35/38',dataFatura:'2025-10-02',pagamento:'Pago',dataPag:'',notas:''},
+  {id:22,pais:'FR',cliente:'PDR TEAM',semana:35,data:'2025-09-26',marca:'Renault',placa:'HB 667 LF',servico:856,montagem:56,liquido:912,status:'APROVADO',fatura:'FEITA',nfatura:'35/38',dataFatura:'2025-10-02',pagamento:'Pago',dataPag:'',notas:''},
+  {id:23,pais:'FR',cliente:'PDR TEAM',semana:35,data:'2025-09-26',marca:'Peugeot',placa:'GT 961 XK',servico:770,montagem:48,liquido:818,status:'APROVADO',fatura:'FEITA',nfatura:'35/38',dataFatura:'2025-10-02',pagamento:'Pago',dataPag:'',notas:''},
+  {id:24,pais:'FR',cliente:'PDR TEAM',semana:35,data:'2025-09-26',marca:'Renault',placa:'GZ 993 YD',servico:172,montagem:52,liquido:224,status:'APROVADO',fatura:'FEITA',nfatura:'35/38',dataFatura:'2025-10-02',pagamento:'Pago',dataPag:'',notas:''},
+  {id:25,pais:'FR',cliente:'PDR TEAM (careoss carrosserie)',semana:34,data:'2025-08-29',marca:'Toyota',placa:'GJ 960 RR',servico:84,montagem:0,liquido:84,status:'APROVADO',fatura:'FEITA',nfatura:'30',dataFatura:'2025-08-30',pagamento:'Pago',dataPag:'',notas:''},
+  {id:26,pais:'FR',cliente:'PDR TEAM (careoss carrosserie)',semana:34,data:'2025-08-29',marca:'Hyundai',placa:'GE 977 DG',servico:420,montagem:52.50,liquido:472.50,status:'APROVADO',fatura:'FEITA',nfatura:'30',dataFatura:'2025-08-30',pagamento:'Pago',dataPag:'',notas:''},
+  {id:27,pais:'FR',cliente:'PDR TEAM (careoss carrosserie)',semana:34,data:'2025-08-29',marca:'Dacia',placa:'GX 992 XA',servico:621.77,montagem:45.50,liquido:667.27,status:'APROVADO',fatura:'FEITA',nfatura:'30',dataFatura:'2025-08-30',pagamento:'Pago',dataPag:'',notas:''},
+  {id:28,pais:'FR',cliente:'PDR TEAM (careoss moulins)',semana:34,data:'2025-08-18',marca:'Citroen',placa:'GX 167 ZZ',servico:365.75,montagem:45.50,liquido:411.25,status:'APROVADO',fatura:'FEITA',nfatura:'29',dataFatura:'2025-08-30',pagamento:'Aguardando',dataPag:'',notas:''},
+  {id:29,pais:'FR',cliente:'PDR TEAM (careoss moulins)',semana:34,data:'2025-08-18',marca:'Peugeot',placa:'FN 361 JB',servico:854.52,montagem:45.50,liquido:900.02,status:'APROVADO',fatura:'FEITA',nfatura:'29',dataFatura:'2025-08-30',pagamento:'Aguardando',dataPag:'',notas:''},
+  {id:30,pais:'FR',cliente:'PDR TEAM (careoss moulins)',semana:34,data:'2025-08-18',marca:'Renault',placa:'DM 526 QT',servico:189.53,montagem:45.50,liquido:235.03,status:'APROVADO',fatura:'FEITA',nfatura:'29',dataFatura:'2025-08-30',pagamento:'Aguardando',dataPag:'',notas:''},
+];
+let nextId=31;
+
+const fmt=v=>'€'+parseFloat(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtDate=d=>d?d.split('-').reverse().join('/'):'—';
+const flag=p=>p==='FR'?'🇫🇷':p==='IT'?'🇮🇹':'🌍';
+
+function filtered(){
+  const q=document.getElementById('search').value.toLowerCase();
+  return trabalhos.filter(t=>{
+    const mf=activeFilter==='todos'||t.pais===activeFilter;
+    const ms=!q||[t.cliente,t.marca,t.placa,t.semana+'',t.notas].some(f=>f.toLowerCase().includes(q));
+    return mf&&ms;
+  });
+}
+
+function renderStats(){
+  const all=filtered();
+  const pago=all.filter(t=>t.pagamento==='Pago').reduce((s,t)=>s+t.liquido,0);
+  const ag=all.filter(t=>t.pagamento==='Aguardando').reduce((s,t)=>s+t.liquido,0);
+  const tot=pago+ag;
+  const sf=all.filter(t=>t.fatura!=='FEITA'&&t.pagamento!=='Pago').length;
+  const pct=tot>0?Math.round(pago/tot*100):0;
+  document.getElementById('stats-row').innerHTML=`
+    <div class="stat"><div class="stat-label">Total Geral</div><div class="stat-val blue">${fmt(tot)}</div><div class="stat-sub">${all.length} trabalhos</div><div class="stat-bar"><div class="stat-bar-fill" style="width:100%;background:var(--blue)"></div></div></div>
+    <div class="stat"><div class="stat-label">Já Recebido</div><div class="stat-val green">${fmt(pago)}</div><div class="stat-sub">${all.filter(t=>t.pagamento==='Pago').length} pagos</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${pct}%;background:var(--green)"></div></div></div>
+    <div class="stat"><div class="stat-label">A Receber</div><div class="stat-val amber">${fmt(ag)}</div><div class="stat-sub">${all.filter(t=>t.pagamento==='Aguardando').length} pendentes</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${100-pct}%;background:var(--amber)"></div></div></div>
+    <div class="stat"><div class="stat-label">Faturas a Emitir</div><div class="stat-val ${sf>0?'red':'green'}">${sf}</div><div class="stat-sub">pendentes</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${sf>0?100:0}%;background:var(--red)"></div></div></div>`;
+}
+
+function renderTable(){
+  const list=filtered().sort((a,b)=>b.semana-a.semana);
+  document.getElementById('empty-msg').style.display=list.length?'none':'block';
+  document.getElementById('tbody').innerHTML=list.map(t=>`
+    <tr onclick="editar(${t.id})">
+      <td>${flag(t.pais)}</td>
+      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;font-size:0.73rem;color:var(--mid)">${t.cliente}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted)">S${t.semana}</td>
+      <td style="font-size:0.7rem;color:var(--mid)">${fmtDate(t.data)}</td>
+      <td><span style="font-size:0.72rem;color:var(--mid)">${t.marca}</span> <span class="td-placa">${t.placa}</span></td>
+      <td style="font-size:0.75rem;color:var(--mid)">${fmt(t.servico)}</td>
+      <td style="font-size:0.72rem;color:var(--muted)">${t.montagem?fmt(t.montagem):'—'}</td>
+      <td class="td-val" style="color:var(--gold)">${fmt(t.liquido)}</td>
+      <td>${t.pagamento==='Pago'?`<span class="badge badge-green"><span class="dot dot-green"></span>Pago</span>`:`<span class="badge badge-amber"><span class="dot dot-amber"></span>Aguardando</span>`}</td>
+      <td>${t.fatura==='FEITA'?`<span class="badge badge-green">✓ ${t.nfatura||'—'}</span>`:`<span class="badge badge-red">Pendente</span>`}</td>
+      <td style="font-size:0.72rem;color:var(--mid)">${fmtDate(t.dataFatura)}</td>
+      <td onclick="event.stopPropagation()"><button onclick="remover(${t.id})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.8rem">✕</button></td>
+    </tr>`).join('');
+}
+
+function renderSidebar(){
+  const pendPag=trabalhos.filter(t=>t.fatura==='FEITA'&&t.pagamento==='Aguardando');
+  const pendFat=trabalhos.filter(t=>t.fatura!=='FEITA'&&t.pagamento!=='Pago');
+  let h='';
+  if(!pendPag.length&&!pendFat.length) h='<div style="font-size:0.75rem;color:var(--muted)">Tudo em ordem ✓</div>';
+  pendFat.forEach(t=>{h+=`<div class="fatura-item urgent"><div class="fi-top"><div class="fi-cliente">${flag(t.pais)} ${t.marca} · ${t.placa}</div><div class="fi-val urgent">${fmt(t.liquido)}</div></div><div class="fi-detail">${t.cliente} · S${t.semana} · Fatura não emitida</div></div>`;});
+  pendPag.forEach(t=>{h+=`<div class="fatura-item"><div class="fi-top"><div class="fi-cliente">${flag(t.pais)} ${t.marca} · ${t.placa}</div><div class="fi-val">${fmt(t.liquido)}</div></div><div class="fi-detail">${t.cliente} · S${t.semana} · Nº${t.nfatura}</div></div>`;});
+  document.getElementById('faturas-list').innerHTML=h;
+
+  let p='';
+  [{pais:'FR',cor:'#3b82f6'},{pais:'IT',cor:'#22c55e'},{pais:'OUT',cor:'#a78bfa'}].forEach(({pais,cor})=>{
+    const l=trabalhos.filter(t=>t.pais===pais);
+    if(!l.length)return;
+    const tot=l.reduce((s,t)=>s+t.liquido,0);
+    const pg=l.filter(t=>t.pagamento==='Pago').reduce((s,t)=>s+t.liquido,0);
+    const allTot=trabalhos.reduce((s,t)=>s+t.liquido,0);
+    const pct=allTot>0?Math.round(tot/allTot*100):0;
+    const nome=pais==='FR'?'🇫🇷 França':pais==='IT'?'🇮🇹 Itália':'🌍 Outro';
+    p+=`<div class="pais-card">
+      <div class="pais-header"><div class="pais-name">${nome}</div><div class="pais-total">${fmt(tot)}</div></div>
+      <div class="pais-row"><span class="pais-row-label">Recebido</span><span class="pais-row-val green">${fmt(pg)}</span></div>
+      <div class="pais-row"><span class="pais-row-label">A receber</span><span class="pais-row-val amber">${fmt(tot-pg)}</span></div>
+      <div class="pais-row"><span class="pais-row-label">Trabalhos</span><span class="pais-row-val">${l.length}</span></div>
+      <div class="pais-bar"><div style="height:100%;width:${pct}%;background:${cor}"></div></div>
+    </div>`;
+  });
+  document.getElementById('paises-resumo').innerHTML=p||'<div style="font-size:0.75rem;color:var(--muted)">Sem dados</div>';
+}
+
+function render(){renderStats();renderTable();renderSidebar();}
+
+function setFilter(f,el){
+  activeFilter=f;
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const labels={todos:'Todos os trabalhos',FR:'🇫🇷 Trabalhos França',IT:'🇮🇹 Trabalhos Itália',OUT:'🌍 Outros países'};
+  document.getElementById('table-label').textContent=labels[f];
+  render();
+}
+
+function abrirModal(){
+  editingId=null;
+  document.getElementById('modal-title').textContent='NOVO TRABALHO';
+  ['f-cliente','f-semana','f-data','f-marca','f-placa','f-servico','f-montagem','f-liquido','f-nfatura','f-datafatura','f-datapag','f-notas'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-pais').value='FR';
+  document.getElementById('f-status').value='APROVADO';
+  document.getElementById('f-fatura').value='NAO';
+  document.getElementById('f-pagamento').value='Aguardando';
+  document.getElementById('overlay').classList.add('open');
+}
+
+function editar(id){
+  const t=trabalhos.find(x=>x.id===id);
+  if(!t)return;
+  editingId=id;
+  document.getElementById('modal-title').textContent='EDITAR TRABALHO';
+  document.getElementById('f-pais').value=t.pais;
+  document.getElementById('f-cliente').value=t.cliente;
+  document.getElementById('f-semana').value=t.semana;
+  document.getElementById('f-data').value=t.data;
+  document.getElementById('f-marca').value=t.marca;
+  document.getElementById('f-placa').value=t.placa;
+  document.getElementById('f-servico').value=t.servico;
+  document.getElementById('f-montagem').value=t.montagem;
+  document.getElementById('f-liquido').value=t.liquido;
+  document.getElementById('f-status').value=t.status;
+  document.getElementById('f-fatura').value=t.fatura;
+  document.getElementById('f-nfatura').value=t.nfatura;
+  document.getElementById('f-datafatura').value=t.dataFatura||'';
+  document.getElementById('f-pagamento').value=t.pagamento;
+  document.getElementById('f-datapag').value=t.dataPag||'';
+  document.getElementById('f-notas').value=t.notas||'';
+  document.getElementById('overlay').classList.add('open');
+}
+
+function fecharModal(){document.getElementById('overlay').classList.remove('open');}
+function fecharOverlay(e){if(e.target===document.getElementById('overlay'))fecharModal();}
+
+function calcLiquido(){
+  const s=parseFloat(document.getElementById('f-servico').value)||0;
+  const m=parseFloat(document.getElementById('f-montagem').value)||0;
+  document.getElementById('f-liquido').value=(s+m).toFixed(2);
+}
+
+function salvar(){
+  const t={
+    pais:document.getElementById('f-pais').value,
+    cliente:document.getElementById('f-cliente').value.trim(),
+    semana:parseInt(document.getElementById('f-semana').value)||0,
+    data:document.getElementById('f-data').value,
+    marca:document.getElementById('f-marca').value.trim(),
+    placa:document.getElementById('f-placa').value.trim().toUpperCase(),
+    servico:parseFloat(document.getElementById('f-servico').value)||0,
+    montagem:parseFloat(document.getElementById('f-montagem').value)||0,
+    liquido:parseFloat(document.getElementById('f-liquido').value)||0,
+    status:document.getElementById('f-status').value,
+    fatura:document.getElementById('f-fatura').value,
+    nfatura:document.getElementById('f-nfatura').value.trim(),
+    dataFatura:document.getElementById('f-datafatura').value,
+    pagamento:document.getElementById('f-pagamento').value,
+    dataPag:document.getElementById('f-datapag').value,
+    notas:document.getElementById('f-notas').value.trim(),
+  };
+  if(!t.cliente||!t.placa){alert('Preencha pelo menos cliente e placa.');return;}
+  if(editingId){const i=trabalhos.findIndex(x=>x.id===editingId);trabalhos[i]={...t,id:editingId};}
+  else{trabalhos.push({...t,id:nextId++});}
+  fecharModal();render();
+}
+
+function remover(id){
+  if(!confirm('Remover este trabalho?'))return;
+  trabalhos=trabalhos.filter(x=>x.id!==id);
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
