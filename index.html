@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Painel Financeiro — FG Levabolli</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
@@ -102,6 +103,7 @@ select.fi option{background:var(--surface);}
 .btn-save{background:var(--gold);border:none;padding:0.5rem 1.5rem;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:#0e0e0e;cursor:pointer;}
 .btn-save:hover{background:#e8c96a;}
 .empty{padding:3rem;text-align:center;color:var(--muted);font-size:0.82rem;}
+.loading{padding:3rem;text-align:center;color:var(--muted);font-size:0.82rem;}
 @media(max-width:900px){.layout{grid-template-columns:1fr;}.stats{grid-template-columns:1fr 1fr;}}
 </style>
 </head>
@@ -140,6 +142,7 @@ select.fi option{background:var(--surface);}
         </thead>
         <tbody id="tbody"></tbody>
       </table>
+      <div class="loading" id="loading-msg">Carregando...</div>
       <div class="empty" id="empty-msg" style="display:none">Nenhum trabalho encontrado.</div>
     </div>
   </div>
@@ -155,7 +158,6 @@ select.fi option{background:var(--surface);}
   </div>
 </div>
 
-<!-- MODAL -->
 <div class="overlay" id="overlay" onclick="fecharOverlay(event)">
   <div class="modal">
     <div class="modal-head">
@@ -211,58 +213,41 @@ select.fi option{background:var(--surface);}
 </div>
 
 <script>
-let editingId=null, activeFilter='todos';
-let trabalhos=[
-  {id:1,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Fiat',placa:'FE 883 HV',servico:200,montagem:60,liquido:260,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
-  {id:2,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Peugeot',placa:'GY 490 WB',servico:426.80,montagem:60,liquido:486.80,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
-  {id:3,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Volvo',placa:'GM 365 QW',servico:279.36,montagem:72,liquido:351.36,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
-  {id:4,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Renault',placa:'HC 446 KY',servico:920,montagem:48,liquido:968,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
-  {id:5,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Peugeot',placa:'EB 412 FD',servico:1150,montagem:60,liquido:1210,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
-  {id:6,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Dacia',placa:'FR 358 PR',servico:332,montagem:60,liquido:392,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
-  {id:7,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Peugeot',placa:'GV 645 YJ',servico:920,montagem:60,liquido:980,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
-  {id:8,pais:'FR',cliente:'PDR TEAM',semana:39,data:'2025-10-02',marca:'Renault',placa:'EV 908 PS',servico:1400,montagem:72,liquido:1472,status:'APROVADO',fatura:'FEITA',nfatura:'40',dataFatura:'2025-10-02',pagamento:'Aguardando',dataPag:'',notas:''},
-  {id:9,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Volkswagen',placa:'GA 531 ZW',servico:1052,montagem:64,liquido:1116,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
-  {id:10,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Citroen',placa:'GT 086 CP',servico:960,montagem:52,liquido:1012,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
-  {id:11,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Peugeot',placa:'GV 731 DJ',servico:1150,montagem:60,liquido:1210,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
-  {id:12,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Mazda',placa:'GM 759 QP',servico:820,montagem:60,liquido:880,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
-  {id:13,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'BMW',placa:'HD 107 CV',servico:920,montagem:60,liquido:980,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
-  {id:14,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Mazda',placa:'FG 264 PB',servico:920,montagem:72,liquido:992,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
-  {id:15,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Dacia',placa:'GZ 522 YL',servico:172,montagem:60,liquido:232,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
-  {id:16,pais:'FR',cliente:'PDR TEAM',semana:38,data:'2025-09-30',marca:'Renault',placa:'EX 182 GM',servico:440,montagem:72,liquido:512,status:'APROVADO',fatura:'FEITA',nfatura:'37',dataFatura:'2025-09-30',pagamento:'Pago',dataPag:'2025-10-06',notas:''},
-  {id:17,pais:'FR',cliente:'PDR TEAM',semana:36,data:'2025-09-26',marca:'Suzuki',placa:'FP 729 XS',servico:600,montagem:52,liquido:652,status:'APROVADO',fatura:'FEITA',nfatura:'36',dataFatura:'2025-09-26',pagamento:'Pago',dataPag:'',notas:''},
-  {id:18,pais:'FR',cliente:'PDR TEAM',semana:36,data:'2025-09-26',marca:'Renault',placa:'GV 259 VS',servico:600,montagem:60,liquido:660,status:'APROVADO',fatura:'FEITA',nfatura:'36',dataFatura:'2025-09-26',pagamento:'Pago',dataPag:'',notas:''},
-  {id:19,pais:'FR',cliente:'PDR TEAM',semana:36,data:'2025-09-26',marca:'Kia',placa:'GJ 760 JH',servico:172,montagem:60,liquido:232,status:'APROVADO',fatura:'FEITA',nfatura:'36',dataFatura:'2025-09-26',pagamento:'Pago',dataPag:'',notas:''},
-  {id:20,pais:'FR',cliente:'PDR TEAM',semana:36,data:'2025-09-26',marca:'Fiat',placa:'EY 406 WH',servico:880,montagem:60,liquido:940,status:'APROVADO',fatura:'FEITA',nfatura:'36',dataFatura:'2025-09-26',pagamento:'Pago',dataPag:'',notas:''},
-  {id:21,pais:'FR',cliente:'PDR TEAM',semana:35,data:'2025-09-26',marca:'Lexus',placa:'ER 653 VX',servico:1060,montagem:60,liquido:1120,status:'APROVADO',fatura:'FEITA',nfatura:'35/38',dataFatura:'2025-10-02',pagamento:'Pago',dataPag:'',notas:''},
-  {id:22,pais:'FR',cliente:'PDR TEAM',semana:35,data:'2025-09-26',marca:'Renault',placa:'HB 667 LF',servico:856,montagem:56,liquido:912,status:'APROVADO',fatura:'FEITA',nfatura:'35/38',dataFatura:'2025-10-02',pagamento:'Pago',dataPag:'',notas:''},
-  {id:23,pais:'FR',cliente:'PDR TEAM',semana:35,data:'2025-09-26',marca:'Peugeot',placa:'GT 961 XK',servico:770,montagem:48,liquido:818,status:'APROVADO',fatura:'FEITA',nfatura:'35/38',dataFatura:'2025-10-02',pagamento:'Pago',dataPag:'',notas:''},
-  {id:24,pais:'FR',cliente:'PDR TEAM',semana:35,data:'2025-09-26',marca:'Renault',placa:'GZ 993 YD',servico:172,montagem:52,liquido:224,status:'APROVADO',fatura:'FEITA',nfatura:'35/38',dataFatura:'2025-10-02',pagamento:'Pago',dataPag:'',notas:''},
-  {id:25,pais:'FR',cliente:'PDR TEAM (careoss carrosserie)',semana:34,data:'2025-08-29',marca:'Toyota',placa:'GJ 960 RR',servico:84,montagem:0,liquido:84,status:'APROVADO',fatura:'FEITA',nfatura:'30',dataFatura:'2025-08-30',pagamento:'Pago',dataPag:'',notas:''},
-  {id:26,pais:'FR',cliente:'PDR TEAM (careoss carrosserie)',semana:34,data:'2025-08-29',marca:'Hyundai',placa:'GE 977 DG',servico:420,montagem:52.50,liquido:472.50,status:'APROVADO',fatura:'FEITA',nfatura:'30',dataFatura:'2025-08-30',pagamento:'Pago',dataPag:'',notas:''},
-  {id:27,pais:'FR',cliente:'PDR TEAM (careoss carrosserie)',semana:34,data:'2025-08-29',marca:'Dacia',placa:'GX 992 XA',servico:621.77,montagem:45.50,liquido:667.27,status:'APROVADO',fatura:'FEITA',nfatura:'30',dataFatura:'2025-08-30',pagamento:'Pago',dataPag:'',notas:''},
-  {id:28,pais:'FR',cliente:'PDR TEAM (careoss moulins)',semana:34,data:'2025-08-18',marca:'Citroen',placa:'GX 167 ZZ',servico:365.75,montagem:45.50,liquido:411.25,status:'APROVADO',fatura:'FEITA',nfatura:'29',dataFatura:'2025-08-30',pagamento:'Aguardando',dataPag:'',notas:''},
-  {id:29,pais:'FR',cliente:'PDR TEAM (careoss moulins)',semana:34,data:'2025-08-18',marca:'Peugeot',placa:'FN 361 JB',servico:854.52,montagem:45.50,liquido:900.02,status:'APROVADO',fatura:'FEITA',nfatura:'29',dataFatura:'2025-08-30',pagamento:'Aguardando',dataPag:'',notas:''},
-  {id:30,pais:'FR',cliente:'PDR TEAM (careoss moulins)',semana:34,data:'2025-08-18',marca:'Renault',placa:'DM 526 QT',servico:189.53,montagem:45.50,liquido:235.03,status:'APROVADO',fatura:'FEITA',nfatura:'29',dataFatura:'2025-08-30',pagamento:'Aguardando',dataPag:'',notas:''},
-];
-let nextId=31;
+// ─── SUPABASE ───────────────────────────────────────────────────
+const SUPABASE_URL = 'https://uepelqzulkpoipsdyivv.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVlcGVscXp1bGtwb2lwc2R5aXZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MTc5OTQsImV4cCI6MjA4ODI5Mzk5NH0.SFOpKoIOsfccxd20ZA8wh9DxoOEQmXSr2kMJ9f7BVUk';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let editingId=null, activeFilter='todos', trabalhos=[];
 
 const fmt=v=>'€'+parseFloat(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const fmtDate=d=>d?d.split('-').reverse().join('/'):'—';
 const flag=p=>p==='FR'?'🇫🇷':p==='IT'?'🇮🇹':'🌍';
 
+// ─── CARREGAR DADOS ─────────────────────────────────────────────
+async function carregarDados(){
+  document.getElementById('loading-msg').style.display='block';
+  document.getElementById('empty-msg').style.display='none';
+  const {data,error}=await sb.from('TRABALHOS').select('*').order('semana',{ascending:false});
+  document.getElementById('loading-msg').style.display='none';
+  if(error){console.error(error);return;}
+  trabalhos=data||[];
+  render();
+}
+
 function filtered(){
   const q=document.getElementById('search').value.toLowerCase();
   return trabalhos.filter(t=>{
     const mf=activeFilter==='todos'||t.pais===activeFilter;
-    const ms=!q||[t.cliente,t.marca,t.placa,t.semana+'',t.notas].some(f=>f.toLowerCase().includes(q));
+    const ms=!q||[t.cliente,t.marca,t.placa,t.semana+'',t.notas].some(f=>(f||'').toLowerCase().includes(q));
     return mf&&ms;
   });
 }
 
 function renderStats(){
   const all=filtered();
-  const pago=all.filter(t=>t.pagamento==='Pago').reduce((s,t)=>s+t.liquido,0);
-  const ag=all.filter(t=>t.pagamento==='Aguardando').reduce((s,t)=>s+t.liquido,0);
+  const pago=all.filter(t=>t.pagamento==='Pago').reduce((s,t)=>s+(t.liquido||0),0);
+  const ag=all.filter(t=>t.pagamento==='Aguardando').reduce((s,t)=>s+(t.liquido||0),0);
   const tot=pago+ag;
   const sf=all.filter(t=>t.fatura!=='FEITA'&&t.pagamento!=='Pago').length;
   const pct=tot>0?Math.round(pago/tot*100):0;
@@ -274,15 +259,15 @@ function renderStats(){
 }
 
 function renderTable(){
-  const list=filtered().sort((a,b)=>b.semana-a.semana);
+  const list=filtered();
   document.getElementById('empty-msg').style.display=list.length?'none':'block';
   document.getElementById('tbody').innerHTML=list.map(t=>`
     <tr onclick="editar(${t.id})">
       <td>${flag(t.pais)}</td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;font-size:0.73rem;color:var(--mid)">${t.cliente}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted)">S${t.semana}</td>
+      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;font-size:0.73rem;color:var(--mid)">${t.cliente||''}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted)">S${t.semana||''}</td>
       <td style="font-size:0.7rem;color:var(--mid)">${fmtDate(t.data)}</td>
-      <td><span style="font-size:0.72rem;color:var(--mid)">${t.marca}</span> <span class="td-placa">${t.placa}</span></td>
+      <td><span style="font-size:0.72rem;color:var(--mid)">${t.marca||''}</span> <span class="td-placa">${t.placa||''}</span></td>
       <td style="font-size:0.75rem;color:var(--mid)">${fmt(t.servico)}</td>
       <td style="font-size:0.72rem;color:var(--muted)">${t.montagem?fmt(t.montagem):'—'}</td>
       <td class="td-val" style="color:var(--gold)">${fmt(t.liquido)}</td>
@@ -306,9 +291,9 @@ function renderSidebar(){
   [{pais:'FR',cor:'#3b82f6'},{pais:'IT',cor:'#22c55e'},{pais:'OUT',cor:'#a78bfa'}].forEach(({pais,cor})=>{
     const l=trabalhos.filter(t=>t.pais===pais);
     if(!l.length)return;
-    const tot=l.reduce((s,t)=>s+t.liquido,0);
-    const pg=l.filter(t=>t.pagamento==='Pago').reduce((s,t)=>s+t.liquido,0);
-    const allTot=trabalhos.reduce((s,t)=>s+t.liquido,0);
+    const tot=l.reduce((s,t)=>s+(t.liquido||0),0);
+    const pg=l.filter(t=>t.pagamento==='Pago').reduce((s,t)=>s+(t.liquido||0),0);
+    const allTot=trabalhos.reduce((s,t)=>s+(t.liquido||0),0);
     const pct=allTot>0?Math.round(tot/allTot*100):0;
     const nome=pais==='FR'?'🇫🇷 França':pais==='IT'?'🇮🇹 Itália':'🌍 Outro';
     p+=`<div class="pais-card">
@@ -349,20 +334,20 @@ function editar(id){
   if(!t)return;
   editingId=id;
   document.getElementById('modal-title').textContent='EDITAR TRABALHO';
-  document.getElementById('f-pais').value=t.pais;
-  document.getElementById('f-cliente').value=t.cliente;
-  document.getElementById('f-semana').value=t.semana;
-  document.getElementById('f-data').value=t.data;
-  document.getElementById('f-marca').value=t.marca;
-  document.getElementById('f-placa').value=t.placa;
-  document.getElementById('f-servico').value=t.servico;
-  document.getElementById('f-montagem').value=t.montagem;
-  document.getElementById('f-liquido').value=t.liquido;
-  document.getElementById('f-status').value=t.status;
-  document.getElementById('f-fatura').value=t.fatura;
-  document.getElementById('f-nfatura').value=t.nfatura;
+  document.getElementById('f-pais').value=t.pais||'FR';
+  document.getElementById('f-cliente').value=t.cliente||'';
+  document.getElementById('f-semana').value=t.semana||'';
+  document.getElementById('f-data').value=t.data||'';
+  document.getElementById('f-marca').value=t.marca||'';
+  document.getElementById('f-placa').value=t.placa||'';
+  document.getElementById('f-servico').value=t.servico||'';
+  document.getElementById('f-montagem').value=t.montagem||'';
+  document.getElementById('f-liquido').value=t.liquido||'';
+  document.getElementById('f-status').value=t.status||'APROVADO';
+  document.getElementById('f-fatura').value=t.fatura||'NAO';
+  document.getElementById('f-nfatura').value=t.nfatura||'';
   document.getElementById('f-datafatura').value=t.dataFatura||'';
-  document.getElementById('f-pagamento').value=t.pagamento;
+  document.getElementById('f-pagamento').value=t.pagamento||'Aguardando';
   document.getElementById('f-datapag').value=t.dataPag||'';
   document.getElementById('f-notas').value=t.notas||'';
   document.getElementById('overlay').classList.add('open');
@@ -377,7 +362,7 @@ function calcLiquido(){
   document.getElementById('f-liquido').value=(s+m).toFixed(2);
 }
 
-function salvar(){
+async function salvar(){
   const t={
     pais:document.getElementById('f-pais').value,
     cliente:document.getElementById('f-cliente').value.trim(),
@@ -397,18 +382,24 @@ function salvar(){
     notas:document.getElementById('f-notas').value.trim(),
   };
   if(!t.cliente||!t.placa){alert('Preencha pelo menos cliente e placa.');return;}
-  if(editingId){const i=trabalhos.findIndex(x=>x.id===editingId);trabalhos[i]={...t,id:editingId};}
-  else{trabalhos.push({...t,id:nextId++});}
-  fecharModal();render();
+
+  if(editingId){
+    await sb.from('TRABALHOS').update(t).eq('id',editingId);
+  } else {
+    await sb.from('TRABALHOS').insert([t]);
+  }
+  fecharModal();
+  await carregarDados();
 }
 
-function remover(id){
+async function remover(id){
   if(!confirm('Remover este trabalho?'))return;
-  trabalhos=trabalhos.filter(x=>x.id!==id);
-  render();
+  await sb.from('TRABALHOS').delete().eq('id',id);
+  await carregarDados();
 }
 
-render();
+// INIT
+carregarDados();
 </script>
 </body>
 </html>
