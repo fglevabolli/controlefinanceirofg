@@ -17,12 +17,28 @@
   --blue:#60a5fa;--gold:#c9a84c;
 }
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;}
+.login-box{background:var(--surface);border:1px solid var(--border);padding:2.5rem;width:360px;}
+.login-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:0.06em;margin-bottom:0.3rem;}
+.login-logo span{color:var(--gold);}
+.login-sub{font-size:0.75rem;color:var(--muted);margin-bottom:2rem;}
+.login-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem;display:block;}
+.login-input{background:var(--bg);border:1px solid var(--border);padding:0.7rem 1rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--text);outline:none;width:100%;margin-bottom:1rem;}
+.login-input:focus{border-color:var(--gold);}
+.login-btn{background:var(--gold);color:#0e0e0e;border:none;padding:0.7rem;font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;width:100%;letter-spacing:0.05em;}
+.login-btn:hover{background:#e8c96a;}
+.login-error{font-size:0.75rem;color:var(--red);margin-top:0.8rem;display:none;}
 .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2rem;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
 .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;letter-spacing:0.06em;}
 .logo span{color:var(--gold);}
 .topbar-right{display:flex;gap:0.6rem;align-items:center;}
 .btn-add{background:var(--gold);color:#0e0e0e;border:none;padding:0.4rem 1rem;font-family:'Syne',sans-serif;font-weight:700;font-size:0.75rem;cursor:pointer;}
 .btn-add:hover{background:#e8c96a;}
+.btn-logout{background:none;border:1px solid var(--border);padding:0.3rem 0.8rem;font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted);cursor:pointer;}
+.btn-logout:hover{color:var(--text);}
+.btn-eye{background:none;border:1px solid var(--border);padding:0.3rem 0.7rem;color:var(--muted);cursor:pointer;font-size:1rem;line-height:1;transition:all 0.15s;}
+.btn-eye:hover{color:var(--text);}
+.btn-eye.oculto{border-color:var(--gold);color:var(--gold);}
 .filter-tabs{display:flex;gap:2px;}
 .ftab{background:var(--card);border:1px solid var(--border);padding:0.3rem 0.8rem;font-size:0.72rem;font-family:'DM Mono',monospace;cursor:pointer;color:var(--muted);transition:all 0.15s;}
 .ftab.active{background:var(--text);color:var(--bg);}
@@ -30,7 +46,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
 .stat{background:var(--surface);padding:1.2rem 1.5rem;}
 .stat-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem;}
-.stat-val{font-family:'Syne',sans-serif;font-weight:800;font-size:1.9rem;line-height:1;}
+.stat-val{font-family:'Syne',sans-serif;font-weight:800;font-size:1.9rem;line-height:1;transition:filter 0.3s;}
 .stat-val.green{color:var(--green);}
 .stat-val.amber{color:var(--amber);}
 .stat-val.red{color:var(--red);}
@@ -68,19 +84,23 @@ tbody td{padding:0.7rem 1rem;white-space:nowrap;}
 .fatura-item.urgent{border-left-color:var(--red);}
 .fi-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.3rem;}
 .fi-cliente{font-size:0.78rem;font-weight:500;}
-.fi-val{font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:var(--amber);}
+.fi-val{font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:var(--amber);transition:filter 0.3s;}
 .fi-val.urgent{color:var(--red);}
 .fi-detail{font-size:0.68rem;color:var(--muted);}
 .pais-card{background:var(--card);border:1px solid var(--border);padding:1rem;margin-bottom:0.6rem;}
 .pais-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;}
 .pais-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;}
-.pais-total{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--gold);}
-.pais-row{display:flex;justify-content:space-between;font-size:0.72rem;padding:0.25rem 0;}
-.pais-row-label{color:var(--muted);}
-.pais-row-val{font-family:'DM Mono',monospace;}
+.pais-total{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--gold);transition:filter 0.3s;}
+.pais-row-val{font-family:'DM Mono',monospace;transition:filter 0.3s;}
 .pais-row-val.green{color:var(--green);}
 .pais-row-val.amber{color:var(--amber);}
+.pais-row{display:flex;justify-content:space-between;font-size:0.72rem;padding:0.25rem 0;}
+.pais-row-label{color:var(--muted);}
 .pais-bar{height:3px;background:var(--border);margin-top:0.7rem;}
+
+/* BLUR */
+body.valores-ocultos .valor-sensivel{filter:blur(6px);user-select:none;}
+
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;}
 .overlay.open{opacity:1;pointer-events:all;}
 .modal{background:var(--surface);border:1px solid var(--border);width:580px;max-width:95vw;max-height:90vh;overflow-y:auto;transform:translateY(16px);transition:transform 0.25s;}
@@ -109,6 +129,18 @@ select.fi option{background:var(--surface);}
 </head>
 <body>
 
+<div class="login-wrap" id="login-wrap">
+  <div class="login-box">
+    <div class="login-logo">FG <span>LEVABOLLI</span></div>
+    <div class="login-sub">Painel Financeiro · Acesso restrito</div>
+    <label class="login-label">Senha</label>
+    <input class="login-input" type="password" id="login-senha" placeholder="••••••••" onkeydown="if(event.key==='Enter')entrar()">
+    <button class="login-btn" onclick="entrar()">ENTRAR</button>
+    <div class="login-error" id="login-error">Senha incorreta. Tente novamente.</div>
+  </div>
+</div>
+
+<div id="painel" style="display:none">
 <div class="topbar">
   <div class="logo">FG <span>LEVABOLLI</span> · Finanças</div>
   <div class="topbar-right">
@@ -118,7 +150,9 @@ select.fi option{background:var(--surface);}
       <div class="ftab" onclick="setFilter('IT',this)">🇮🇹 Itália</div>
       <div class="ftab" onclick="setFilter('OUT',this)">🌍 Outro</div>
     </div>
+    <button class="btn-eye" id="btn-eye" onclick="toggleValores()" title="Ocultar/mostrar valores">👁</button>
     <button class="btn-add" onclick="abrirModal()">+ NOVO TRABALHO</button>
+    <button class="btn-logout" onclick="sair()">SAIR</button>
   </div>
 </div>
 
@@ -156,6 +190,7 @@ select.fi option{background:var(--surface);}
       <div id="paises-resumo"></div>
     </div>
   </div>
+</div>
 </div>
 
 <div class="overlay" id="overlay" onclick="fecharOverlay(event)">
@@ -213,22 +248,54 @@ select.fi option{background:var(--surface);}
 </div>
 
 <script>
-// ─── SUPABASE ───────────────────────────────────────────────────
-const SUPABASE_URL = 'https://uepelqzulkpoipsdyivv.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVlcGVscXp1bGtwb2lwc2R5aXZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MTc5OTQsImV4cCI6MjA4ODI5Mzk5NH0.SFOpKoIOsfccxd20ZA8wh9DxoOEQmXSr2kMJ9f7BVUk';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL='https://uepelqzulkpoipsdyivv.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVlcGVscXp1bGtwb2lwc2R5aXZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MTc5OTQsImV4cCI6MjA4ODI5Mzk5NH0.SFOpKoIOsfccxd20ZA8wh9DxoOEQmXSr2kMJ9f7BVUk';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const SENHA='Sullyanne@1';
 
-let editingId=null, activeFilter='todos', trabalhos=[];
+let editingId=null,activeFilter='todos',trabalhos=[],valoresOcultos=false;
+
+function entrar(){
+  const s=document.getElementById('login-senha').value;
+  if(s===SENHA){
+    sessionStorage.setItem('fg_auth','ok');
+    document.getElementById('login-wrap').style.display='none';
+    document.getElementById('painel').style.display='block';
+    carregarDados();
+  } else {
+    document.getElementById('login-error').style.display='block';
+  }
+}
+
+function sair(){
+  sessionStorage.removeItem('fg_auth');
+  document.getElementById('painel').style.display='none';
+  document.getElementById('login-wrap').style.display='flex';
+  document.getElementById('login-senha').value='';
+}
+
+function toggleValores(){
+  valoresOcultos=!valoresOcultos;
+  document.body.classList.toggle('valores-ocultos',valoresOcultos);
+  const btn=document.getElementById('btn-eye');
+  btn.textContent=valoresOcultos?'🙈':'👁';
+  btn.classList.toggle('oculto',valoresOcultos);
+}
+
+if(sessionStorage.getItem('fg_auth')==='ok'){
+  document.getElementById('login-wrap').style.display='none';
+  document.getElementById('painel').style.display='block';
+  carregarDados();
+}
 
 const fmt=v=>'€'+parseFloat(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const fmtDate=d=>d?d.split('-').reverse().join('/'):'—';
 const flag=p=>p==='FR'?'🇫🇷':p==='IT'?'🇮🇹':'🌍';
 
-// ─── CARREGAR DADOS ─────────────────────────────────────────────
 async function carregarDados(){
   document.getElementById('loading-msg').style.display='block';
   document.getElementById('empty-msg').style.display='none';
-  const {data,error}=await sb.from('TRABALHOS').select('*').order('semana',{ascending:false});
+  const{data,error}=await sb.from('TRABALHOS').select('*').order('semana',{ascending:false});
   document.getElementById('loading-msg').style.display='none';
   if(error){console.error(error);return;}
   trabalhos=data||[];
@@ -252,9 +319,9 @@ function renderStats(){
   const sf=all.filter(t=>t.fatura!=='FEITA'&&t.pagamento!=='Pago').length;
   const pct=tot>0?Math.round(pago/tot*100):0;
   document.getElementById('stats-row').innerHTML=`
-    <div class="stat"><div class="stat-label">Total Geral</div><div class="stat-val blue">${fmt(tot)}</div><div class="stat-sub">${all.length} trabalhos</div><div class="stat-bar"><div class="stat-bar-fill" style="width:100%;background:var(--blue)"></div></div></div>
-    <div class="stat"><div class="stat-label">Já Recebido</div><div class="stat-val green">${fmt(pago)}</div><div class="stat-sub">${all.filter(t=>t.pagamento==='Pago').length} pagos</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${pct}%;background:var(--green)"></div></div></div>
-    <div class="stat"><div class="stat-label">A Receber</div><div class="stat-val amber">${fmt(ag)}</div><div class="stat-sub">${all.filter(t=>t.pagamento==='Aguardando').length} pendentes</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${100-pct}%;background:var(--amber)"></div></div></div>
+    <div class="stat"><div class="stat-label">Total Geral</div><div class="stat-val blue valor-sensivel">${fmt(tot)}</div><div class="stat-sub">${all.length} trabalhos</div><div class="stat-bar"><div class="stat-bar-fill" style="width:100%;background:var(--blue)"></div></div></div>
+    <div class="stat"><div class="stat-label">Já Recebido</div><div class="stat-val green valor-sensivel">${fmt(pago)}</div><div class="stat-sub">${all.filter(t=>t.pagamento==='Pago').length} pagos</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${pct}%;background:var(--green)"></div></div></div>
+    <div class="stat"><div class="stat-label">A Receber</div><div class="stat-val amber valor-sensivel">${fmt(ag)}</div><div class="stat-sub">${all.filter(t=>t.pagamento==='Aguardando').length} pendentes</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${100-pct}%;background:var(--amber)"></div></div></div>
     <div class="stat"><div class="stat-label">Faturas a Emitir</div><div class="stat-val ${sf>0?'red':'green'}">${sf}</div><div class="stat-sub">pendentes</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${sf>0?100:0}%;background:var(--red)"></div></div></div>`;
 }
 
@@ -268,9 +335,9 @@ function renderTable(){
       <td style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted)">S${t.semana||''}</td>
       <td style="font-size:0.7rem;color:var(--mid)">${fmtDate(t.data)}</td>
       <td><span style="font-size:0.72rem;color:var(--mid)">${t.marca||''}</span> <span class="td-placa">${t.placa||''}</span></td>
-      <td style="font-size:0.75rem;color:var(--mid)">${fmt(t.servico)}</td>
-      <td style="font-size:0.72rem;color:var(--muted)">${t.montagem?fmt(t.montagem):'—'}</td>
-      <td class="td-val" style="color:var(--gold)">${fmt(t.liquido)}</td>
+      <td class="valor-sensivel" style="font-size:0.75rem;color:var(--mid)">${fmt(t.servico)}</td>
+      <td class="valor-sensivel" style="font-size:0.72rem;color:var(--muted)">${t.montagem?fmt(t.montagem):'—'}</td>
+      <td class="td-val valor-sensivel" style="color:var(--gold)">${fmt(t.liquido)}</td>
       <td>${t.pagamento==='Pago'?`<span class="badge badge-green"><span class="dot dot-green"></span>Pago</span>`:`<span class="badge badge-amber"><span class="dot dot-amber"></span>Aguardando</span>`}</td>
       <td>${t.fatura==='FEITA'?`<span class="badge badge-green">✓ ${t.nfatura||'—'}</span>`:`<span class="badge badge-red">Pendente</span>`}</td>
       <td style="font-size:0.72rem;color:var(--mid)">${fmtDate(t.dataFatura)}</td>
@@ -283,8 +350,8 @@ function renderSidebar(){
   const pendFat=trabalhos.filter(t=>t.fatura!=='FEITA'&&t.pagamento!=='Pago');
   let h='';
   if(!pendPag.length&&!pendFat.length) h='<div style="font-size:0.75rem;color:var(--muted)">Tudo em ordem ✓</div>';
-  pendFat.forEach(t=>{h+=`<div class="fatura-item urgent"><div class="fi-top"><div class="fi-cliente">${flag(t.pais)} ${t.marca} · ${t.placa}</div><div class="fi-val urgent">${fmt(t.liquido)}</div></div><div class="fi-detail">${t.cliente} · S${t.semana} · Fatura não emitida</div></div>`;});
-  pendPag.forEach(t=>{h+=`<div class="fatura-item"><div class="fi-top"><div class="fi-cliente">${flag(t.pais)} ${t.marca} · ${t.placa}</div><div class="fi-val">${fmt(t.liquido)}</div></div><div class="fi-detail">${t.cliente} · S${t.semana} · Nº${t.nfatura}</div></div>`;});
+  pendFat.forEach(t=>{h+=`<div class="fatura-item urgent"><div class="fi-top"><div class="fi-cliente">${flag(t.pais)} ${t.marca} · ${t.placa}</div><div class="fi-val urgent valor-sensivel">${fmt(t.liquido)}</div></div><div class="fi-detail">${t.cliente} · S${t.semana} · Fatura não emitida</div></div>`;});
+  pendPag.forEach(t=>{h+=`<div class="fatura-item"><div class="fi-top"><div class="fi-cliente">${flag(t.pais)} ${t.marca} · ${t.placa}</div><div class="fi-val valor-sensivel">${fmt(t.liquido)}</div></div><div class="fi-detail">${t.cliente} · S${t.semana} · Nº${t.nfatura}</div></div>`;});
   document.getElementById('faturas-list').innerHTML=h;
 
   let p='';
@@ -297,9 +364,9 @@ function renderSidebar(){
     const pct=allTot>0?Math.round(tot/allTot*100):0;
     const nome=pais==='FR'?'🇫🇷 França':pais==='IT'?'🇮🇹 Itália':'🌍 Outro';
     p+=`<div class="pais-card">
-      <div class="pais-header"><div class="pais-name">${nome}</div><div class="pais-total">${fmt(tot)}</div></div>
-      <div class="pais-row"><span class="pais-row-label">Recebido</span><span class="pais-row-val green">${fmt(pg)}</span></div>
-      <div class="pais-row"><span class="pais-row-label">A receber</span><span class="pais-row-val amber">${fmt(tot-pg)}</span></div>
+      <div class="pais-header"><div class="pais-name">${nome}</div><div class="pais-total valor-sensivel">${fmt(tot)}</div></div>
+      <div class="pais-row"><span class="pais-row-label">Recebido</span><span class="pais-row-val green valor-sensivel">${fmt(pg)}</span></div>
+      <div class="pais-row"><span class="pais-row-label">A receber</span><span class="pais-row-val amber valor-sensivel">${fmt(tot-pg)}</span></div>
       <div class="pais-row"><span class="pais-row-label">Trabalhos</span><span class="pais-row-val">${l.length}</span></div>
       <div class="pais-bar"><div style="height:100%;width:${pct}%;background:${cor}"></div></div>
     </div>`;
@@ -382,7 +449,6 @@ async function salvar(){
     notas:document.getElementById('f-notas').value.trim(),
   };
   if(!t.cliente||!t.placa){alert('Preencha pelo menos cliente e placa.');return;}
-
   if(editingId){
     await sb.from('TRABALHOS').update(t).eq('id',editingId);
   } else {
@@ -397,9 +463,6 @@ async function remover(id){
   await sb.from('TRABALHOS').delete().eq('id',id);
   await carregarDados();
 }
-
-// INIT
-carregarDados();
 </script>
 </body>
 </html>
