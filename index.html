@@ -66,17 +66,20 @@ table{width:100%;border-collapse:collapse;font-size:0.78rem;}
 thead th{padding:0.6rem 1rem;text-align:left;font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border);background:var(--surface);white-space:nowrap;}
 tbody tr{border-bottom:1px solid #1e1e1e;cursor:pointer;transition:background 0.1s;}
 tbody tr:hover{background:var(--card);}
-tbody td{padding:0.7rem 1rem;white-space:nowrap;}
+tbody tr.selected{background:rgba(201,168,76,0.07);outline:1px solid rgba(201,168,76,0.3);}
+tbody td{padding:0.7rem 1rem;white-space:nowrap;user-select:none;}
 .td-placa{font-family:'DM Mono',monospace;font-size:0.72rem;background:var(--card);padding:0.15rem 0.4rem;border:1px solid var(--border);}
 .td-val{font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;}
 .badge{display:inline-flex;align-items:center;gap:0.3rem;padding:0.2rem 0.5rem;font-size:0.62rem;font-family:'DM Mono',monospace;white-space:nowrap;}
 .badge-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(74,222,128,0.2);}
 .badge-amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(251,191,36,0.2);}
 .badge-red{background:var(--red-bg);color:var(--red);border:1px solid rgba(248,113,113,0.2);}
+.badge-blue{background:rgba(96,165,250,0.08);color:var(--blue);border:1px solid rgba(96,165,250,0.2);}
 .dot{width:5px;height:5px;border-radius:50%;display:inline-block;}
 .dot-green{background:var(--green);}
 .dot-amber{background:var(--amber);}
 .dot-red{background:var(--red);}
+.dot-blue{background:var(--blue);}
 .sidebar{padding:1.5rem;}
 .sb-title{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);}
 .sidebar-block{margin-bottom:2rem;}
@@ -98,6 +101,30 @@ tbody td{padding:0.7rem 1rem;white-space:nowrap;}
 .pais-row-label{color:var(--muted);}
 .pais-bar{height:3px;background:var(--border);margin-top:0.7rem;}
 body.valores-ocultos .valor-sensivel{filter:blur(6px);user-select:none;}
+
+/* BARRA FLUTUANTE */
+.bulk-bar{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);
+  background:#1a1a1a;border:1px solid var(--border);
+  padding:0.8rem 1.2rem;display:flex;align-items:center;gap:1.2rem;
+  box-shadow:0 8px 32px rgba(0,0,0,0.6);z-index:200;
+  transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  white-space:nowrap;
+}
+.bulk-bar.visible{transform:translateX(-50%) translateY(0);}
+.bulk-count{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--gold);padding-right:1rem;border-right:1px solid var(--border);}
+.bulk-group{display:flex;flex-direction:column;gap:0.3rem;}
+.bulk-group-label{font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
+.bulk-actions{display:flex;gap:0.4rem;}
+.bulk-btn{background:var(--card);border:1px solid var(--border);padding:0.3rem 0.7rem;font-family:'DM Sans',sans-serif;font-size:0.72rem;color:var(--text);cursor:pointer;transition:all 0.15s;}
+.bulk-btn:hover{border-color:var(--gold);color:var(--gold);}
+.bulk-btn.green:hover{border-color:var(--green);color:var(--green);}
+.bulk-btn.red:hover{border-color:var(--red);color:var(--red);}
+.bulk-btn.blue:hover{border-color:var(--blue);color:var(--blue);}
+.bulk-sep{width:1px;height:40px;background:var(--border);align-self:center;}
+.bulk-cancel{background:none;border:none;color:var(--muted);font-size:0.75rem;cursor:pointer;padding:0.3rem 0.5rem;font-family:'DM Mono',monospace;}
+.bulk-cancel:hover{color:var(--red);}
+
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;}
 .overlay.open{opacity:1;pointer-events:all;}
 .modal{background:var(--surface);border:1px solid var(--border);width:580px;max-width:95vw;max-height:90vh;overflow-y:auto;transform:translateY(16px);transition:transform 0.25s;}
@@ -166,12 +193,12 @@ select.fi option{background:var(--surface);}
       <input class="search-box" id="search" placeholder="Buscar placa, cliente, marca..." oninput="render()">
     </div>
     <div class="table-wrap">
-      <table>
+      <table id="main-table">
         <thead>
           <tr>
             <th></th><th>Cliente</th><th>Sem.</th><th>Data</th>
             <th>Marca / Placa</th><th>Serviço</th><th>Montagem</th>
-            <th>Líquido</th><th>Pagamento</th><th>Fatura</th>
+            <th>Líquido</th><th>Serviço</th><th>Fatura</th><th>Pagamento</th>
             <th>Data Fatura</th><th></th>
           </tr>
         </thead>
@@ -192,6 +219,42 @@ select.fi option{background:var(--surface);}
     </div>
   </div>
 </div>
+</div>
+
+<!-- BARRA FLUTUANTE -->
+<div class="bulk-bar" id="bulk-bar">
+  <div class="bulk-count" id="bulk-count">0 selecionados</div>
+
+  <div class="bulk-group">
+    <div class="bulk-group-label">Serviço</div>
+    <div class="bulk-actions">
+      <button class="bulk-btn green" onclick="bulkUpdate('status','APROVADO')">✅ Aprovado</button>
+      <button class="bulk-btn red" onclick="bulkUpdate('status','PENDENTE')">⏳ Pendente</button>
+    </div>
+  </div>
+
+  <div class="bulk-sep"></div>
+
+  <div class="bulk-group">
+    <div class="bulk-group-label">Fatura</div>
+    <div class="bulk-actions">
+      <button class="bulk-btn green" onclick="bulkUpdate('fatura','FEITA')">📄 Emitida</button>
+      <button class="bulk-btn red" onclick="bulkUpdate('fatura','NAO')">➖ Não emitida</button>
+    </div>
+  </div>
+
+  <div class="bulk-sep"></div>
+
+  <div class="bulk-group">
+    <div class="bulk-group-label">Pagamento</div>
+    <div class="bulk-actions">
+      <button class="bulk-btn green" onclick="bulkUpdate('pagamento','Pago')">💰 Recebido</button>
+      <button class="bulk-btn blue" onclick="bulkUpdate('pagamento','Aguardando')">⏳ Aguardando</button>
+    </div>
+  </div>
+
+  <div class="bulk-sep"></div>
+  <button class="bulk-cancel" onclick="limparSelecao()">✕ Cancelar</button>
 </div>
 
 <div class="overlay" id="overlay" onclick="fecharOverlay(event)">
@@ -218,8 +281,12 @@ select.fi option{background:var(--surface);}
       </div>
       <div class="form-row">
         <div class="fg"><label class="fl">Placa</label><input class="fi" id="f-placa" placeholder="AB 123 CD" style="text-transform:uppercase"></div>
-        <div class="fg"><label class="fl">Status</label>
-          <select class="fi" id="f-status"><option value="APROVADO">✅ Aprovado</option><option value="AGUARDANDO">⏳ Aguardando</option></select></div>
+        <div class="fg"><label class="fl">Serviço</label>
+          <select class="fi" id="f-status">
+            <option value="APROVADO">✅ Aprovado</option>
+            <option value="PENDENTE">⏳ Pendente</option>
+          </select>
+        </div>
       </div>
       <div class="form-row quad">
         <div class="fg"><label class="fl">Valor Total (€)</label><input class="fi" id="f-total" type="number" step="0.01" placeholder="0.00" oninput="calcServico()"></div>
@@ -227,21 +294,26 @@ select.fi option{background:var(--surface);}
         <div class="fg"><label class="fl">Valor Serviço (€)</label><input class="fi" id="f-servico" type="number" step="0.01" placeholder="0.00" style="color:var(--gold)" oninput="calcLiquido()"></div>
         <div class="fg"><label class="fl">Montagem (€)</label><input class="fi" id="f-montagem" type="number" step="0.01" placeholder="0.00" oninput="calcLiquido()"></div>
       </div>
-      <div class="form-row">
+      <div class="form-row single">
         <div class="fg"><label class="fl">Líquido (€)</label><input class="fi" id="f-liquido" type="number" step="0.01" placeholder="0.00" style="color:var(--gold);font-weight:700" readonly></div>
-        <div class="fg"><label class="fl">Status</label>
-          <select class="fi" id="f-status2" style="display:none"></select>
-        </div>
       </div>
       <div class="form-row triple">
         <div class="fg"><label class="fl">Fatura</label>
-          <select class="fi" id="f-fatura"><option value="NAO">Não feita</option><option value="FEITA">Feita</option></select></div>
+          <select class="fi" id="f-fatura">
+            <option value="NAO">➖ Não emitida</option>
+            <option value="FEITA">📄 Emitida</option>
+          </select>
+        </div>
         <div class="fg"><label class="fl">N° Fatura</label><input class="fi" id="f-nfatura" placeholder="40"></div>
         <div class="fg"><label class="fl">Data Fatura</label><input class="fi" id="f-datafatura" type="date"></div>
       </div>
       <div class="form-row">
         <div class="fg"><label class="fl">Pagamento</label>
-          <select class="fi" id="f-pagamento"><option value="Aguardando">⏳ Aguardando</option><option value="Pago">✅ Pago</option></select></div>
+          <select class="fi" id="f-pagamento">
+            <option value="Aguardando">⏳ Aguardando</option>
+            <option value="Pago">💰 Recebido</option>
+          </select>
+        </div>
         <div class="fg"><label class="fl">Data Pagamento</label><input class="fi" id="f-datapag" type="date"></div>
       </div>
       <div class="form-row single">
@@ -262,7 +334,10 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const SENHA='Sullyanne@1';
 
 let editingId=null,activeFilter='todos',trabalhos=[],valoresOcultos=false;
+let selectedIds=new Set();
+let isDragging=false,dragStarted=false;
 
+// LOGIN
 function entrar(){
   const s=document.getElementById('login-senha').value;
   if(s===SENHA){
@@ -274,14 +349,12 @@ function entrar(){
     document.getElementById('login-error').style.display='block';
   }
 }
-
 function sair(){
   sessionStorage.removeItem('fg_auth');
   document.getElementById('painel').style.display='none';
   document.getElementById('login-wrap').style.display='flex';
   document.getElementById('login-senha').value='';
 }
-
 function toggleValores(){
   valoresOcultos=!valoresOcultos;
   document.body.classList.toggle('valores-ocultos',valoresOcultos);
@@ -289,7 +362,6 @@ function toggleValores(){
   btn.textContent=valoresOcultos?'🙈':'👁';
   btn.classList.toggle('oculto',valoresOcultos);
 }
-
 if(sessionStorage.getItem('fg_auth')==='ok'){
   document.getElementById('login-wrap').style.display='none';
   document.getElementById('painel').style.display='block';
@@ -300,18 +372,55 @@ const fmt=v=>'€'+parseFloat(v||0).toLocaleString('pt-BR',{minimumFractionDigit
 const fmtDate=d=>d?d.split('-').reverse().join('/'):'—';
 const flag=p=>p==='FR'?'🇫🇷':p==='IT'?'🇮🇹':'🌍';
 
-function calcServico(){
-  const total=parseFloat(document.getElementById('f-total').value)||0;
-  const pct=parseFloat(document.getElementById('f-pct').value)||100;
-  const servico=total*(pct/100);
-  document.getElementById('f-servico').value=servico?servico.toFixed(2):'';
-  calcLiquido();
+// SELEÇÃO
+function toggleSelect(id,tr){
+  if(selectedIds.has(id)){selectedIds.delete(id);tr.classList.remove('selected');}
+  else{selectedIds.add(id);tr.classList.add('selected');}
+  updateBulkBar();
+}
+function updateBulkBar(){
+  const bar=document.getElementById('bulk-bar');
+  const n=selectedIds.size;
+  document.getElementById('bulk-count').textContent=n+' '+(n===1?'selecionado':'selecionados');
+  bar.classList.toggle('visible',n>0);
+}
+function limparSelecao(){
+  selectedIds.clear();
+  document.querySelectorAll('tbody tr.selected').forEach(r=>r.classList.remove('selected'));
+  updateBulkBar();
 }
 
-function calcLiquido(){
-  const s=parseFloat(document.getElementById('f-servico').value)||0;
-  const m=parseFloat(document.getElementById('f-montagem').value)||0;
-  document.getElementById('f-liquido').value=(s+m).toFixed(2);
+async function bulkUpdate(campo,valor){
+  if(!selectedIds.size)return;
+  const ids=Array.from(selectedIds);
+  await sb.from('TRABALHOS').update({[campo]:valor}).in('id',ids);
+  limparSelecao();
+  await carregarDados();
+}
+
+// DRAG TO SELECT
+function setupDrag(){
+  const tbody=document.getElementById('tbody');
+  tbody.addEventListener('mousedown',e=>{
+    const tr=e.target.closest('tr');
+    if(!tr)return;
+    if(e.target.closest('button'))return;
+    isDragging=true;dragStarted=false;
+    const id=parseInt(tr.dataset.id);
+    // toggle click simples
+    if(!dragStarted){
+      toggleSelect(id,tr);
+    }
+  });
+  tbody.addEventListener('mousemove',e=>{
+    if(!isDragging)return;
+    dragStarted=true;
+    const tr=e.target.closest('tr');
+    if(!tr)return;
+    const id=parseInt(tr.dataset.id);
+    if(!selectedIds.has(id)){selectedIds.add(id);tr.classList.add('selected');updateBulkBar();}
+  });
+  document.addEventListener('mouseup',()=>{isDragging=false;});
 }
 
 async function carregarDados(){
@@ -333,6 +442,19 @@ function filtered(){
   });
 }
 
+function badgeServico(s){
+  if(s==='APROVADO') return `<span class="badge badge-green"><span class="dot dot-green"></span>Aprovado</span>`;
+  return `<span class="badge badge-amber"><span class="dot dot-amber"></span>Pendente</span>`;
+}
+function badgeFatura(f,n){
+  if(f==='FEITA') return `<span class="badge badge-green">📄 ${n||'—'}</span>`;
+  return `<span class="badge badge-red">➖ Não emitida</span>`;
+}
+function badgePagamento(p){
+  if(p==='Pago') return `<span class="badge badge-green"><span class="dot dot-green"></span>Recebido</span>`;
+  return `<span class="badge badge-amber"><span class="dot dot-amber"></span>Aguardando</span>`;
+}
+
 function renderStats(){
   const all=filtered();
   const pago=all.filter(t=>t.pagamento==='Pago').reduce((s,t)=>s+(t.liquido||0),0);
@@ -351,7 +473,7 @@ function renderTable(){
   const list=filtered();
   document.getElementById('empty-msg').style.display=list.length?'none':'block';
   document.getElementById('tbody').innerHTML=list.map(t=>`
-    <tr onclick="editar(${t.id})">
+    <tr data-id="${t.id}" class="${selectedIds.has(t.id)?'selected':''}" onclick="handleRowClick(event,${t.id},this)">
       <td>${flag(t.pais)}</td>
       <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;font-size:0.73rem;color:var(--mid)">${t.cliente||''}</td>
       <td style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted)">S${t.semana||''}</td>
@@ -360,11 +482,20 @@ function renderTable(){
       <td class="valor-sensivel" style="font-size:0.75rem;color:var(--mid)">${fmt(t.servico)}</td>
       <td class="valor-sensivel" style="font-size:0.72rem;color:var(--muted)">${t.montagem?fmt(t.montagem):'—'}</td>
       <td class="td-val valor-sensivel" style="color:var(--gold)">${fmt(t.liquido)}</td>
-      <td>${t.pagamento==='Pago'?`<span class="badge badge-green"><span class="dot dot-green"></span>Pago</span>`:`<span class="badge badge-amber"><span class="dot dot-amber"></span>Aguardando</span>`}</td>
-      <td>${t.fatura==='FEITA'?`<span class="badge badge-green">✓ ${t.nfatura||'—'}</span>`:`<span class="badge badge-red">Pendente</span>`}</td>
+      <td>${badgeServico(t.status)}</td>
+      <td>${badgeFatura(t.fatura,t.nfatura)}</td>
+      <td>${badgePagamento(t.pagamento)}</td>
       <td style="font-size:0.72rem;color:var(--mid)">${fmtDate(t.dataFatura)}</td>
       <td onclick="event.stopPropagation()"><button onclick="remover(${t.id})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.8rem">✕</button></td>
     </tr>`).join('');
+  setupDrag();
+}
+
+function handleRowClick(e,id,tr){
+  if(e.target.closest('button'))return;
+  // se tem selecao ativa, toggle; senão abre modal
+  if(selectedIds.size>0){toggleSelect(id,tr);return;}
+  editar(id);
 }
 
 function renderSidebar(){
@@ -405,6 +536,19 @@ function setFilter(f,el){
   const labels={todos:'Todos os trabalhos',FR:'🇫🇷 Trabalhos França',IT:'🇮🇹 Trabalhos Itália',OUT:'🌍 Outros países'};
   document.getElementById('table-label').textContent=labels[f];
   render();
+}
+
+function calcServico(){
+  const total=parseFloat(document.getElementById('f-total').value)||0;
+  const pct=parseFloat(document.getElementById('f-pct').value)||100;
+  const servico=total*(pct/100);
+  document.getElementById('f-servico').value=servico?servico.toFixed(2):'';
+  calcLiquido();
+}
+function calcLiquido(){
+  const s=parseFloat(document.getElementById('f-servico').value)||0;
+  const m=parseFloat(document.getElementById('f-montagem').value)||0;
+  document.getElementById('f-liquido').value=(s+m).toFixed(2);
 }
 
 function abrirModal(){
