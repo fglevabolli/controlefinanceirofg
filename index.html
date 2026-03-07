@@ -101,16 +101,7 @@ tbody td{padding:0.7rem 1rem;white-space:nowrap;user-select:none;}
 .pais-row-label{color:var(--muted);}
 .pais-bar{height:3px;background:var(--border);margin-top:0.7rem;}
 body.valores-ocultos .valor-sensivel{filter:blur(6px);user-select:none;}
-
-/* BARRA FLUTUANTE */
-.bulk-bar{
-  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);
-  background:#1a1a1a;border:1px solid var(--border);
-  padding:0.8rem 1.2rem;display:flex;align-items:center;gap:1.2rem;
-  box-shadow:0 8px 32px rgba(0,0,0,0.6);z-index:200;
-  transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
-  white-space:nowrap;
-}
+.bulk-bar{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1a1a;border:1px solid var(--border);padding:0.8rem 1.2rem;display:flex;align-items:center;gap:1.2rem;box-shadow:0 8px 32px rgba(0,0,0,0.6);z-index:200;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;}
 .bulk-bar.visible{transform:translateX(-50%) translateY(0);}
 .bulk-count{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--gold);padding-right:1rem;border-right:1px solid var(--border);}
 .bulk-group{display:flex;flex-direction:column;gap:0.3rem;}
@@ -124,7 +115,6 @@ body.valores-ocultos .valor-sensivel{filter:blur(6px);user-select:none;}
 .bulk-sep{width:1px;height:40px;background:var(--border);align-self:center;}
 .bulk-cancel{background:none;border:none;color:var(--muted);font-size:0.75rem;cursor:pointer;padding:0.3rem 0.5rem;font-family:'DM Mono',monospace;}
 .bulk-cancel:hover{color:var(--red);}
-
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;}
 .overlay.open{opacity:1;pointer-events:all;}
 .modal{background:var(--surface);border:1px solid var(--border);width:580px;max-width:95vw;max-height:90vh;overflow-y:auto;transform:translateY(16px);transition:transform 0.25s;}
@@ -198,7 +188,7 @@ select.fi option{background:var(--surface);}
           <tr>
             <th></th><th>Cliente</th><th>Sem.</th><th>Data</th>
             <th>Marca / Placa</th><th>Serviço</th><th>Montagem</th>
-            <th>Líquido</th><th>Serviço</th><th>Fatura</th><th>Pagamento</th>
+            <th>Líquido</th><th>Status</th><th>Fatura</th><th>Pagamento</th>
             <th>Data Fatura</th><th></th>
           </tr>
         </thead>
@@ -221,10 +211,8 @@ select.fi option{background:var(--surface);}
 </div>
 </div>
 
-<!-- BARRA FLUTUANTE -->
 <div class="bulk-bar" id="bulk-bar">
   <div class="bulk-count" id="bulk-count">0 selecionados</div>
-
   <div class="bulk-group">
     <div class="bulk-group-label">Serviço</div>
     <div class="bulk-actions">
@@ -232,9 +220,7 @@ select.fi option{background:var(--surface);}
       <button class="bulk-btn red" onclick="bulkUpdate('status','PENDENTE')">⏳ Pendente</button>
     </div>
   </div>
-
   <div class="bulk-sep"></div>
-
   <div class="bulk-group">
     <div class="bulk-group-label">Fatura</div>
     <div class="bulk-actions">
@@ -242,9 +228,7 @@ select.fi option{background:var(--surface);}
       <button class="bulk-btn red" onclick="bulkUpdate('fatura','NAO')">➖ Não emitida</button>
     </div>
   </div>
-
   <div class="bulk-sep"></div>
-
   <div class="bulk-group">
     <div class="bulk-group-label">Pagamento</div>
     <div class="bulk-actions">
@@ -252,7 +236,6 @@ select.fi option{background:var(--surface);}
       <button class="bulk-btn blue" onclick="bulkUpdate('pagamento','Aguardando')">⏳ Aguardando</button>
     </div>
   </div>
-
   <div class="bulk-sep"></div>
   <button class="bulk-cancel" onclick="limparSelecao()">✕ Cancelar</button>
 </div>
@@ -288,15 +271,28 @@ select.fi option{background:var(--surface);}
           </select>
         </div>
       </div>
+
+      <!-- VALORES -->
       <div class="form-row quad">
-        <div class="fg"><label class="fl">Valor Total (€)</label><input class="fi" id="f-total" type="number" step="0.01" placeholder="0.00" oninput="calcServico()"></div>
-        <div class="fg"><label class="fl">Minha Parte (%)</label><input class="fi fi-pct" id="f-pct" type="number" min="1" max="100" placeholder="100" oninput="calcServico()"><div class="pct-hint">Deixe vazio = 100%</div></div>
-        <div class="fg"><label class="fl">Valor Serviço (€)</label><input class="fi" id="f-servico" type="number" step="0.01" placeholder="0.00" style="color:var(--gold)" oninput="calcLiquido()"></div>
-        <div class="fg"><label class="fl">Montagem (€)</label><input class="fi" id="f-montagem" type="number" step="0.01" placeholder="0.00" oninput="calcLiquido()"></div>
+        <div class="fg">
+          <label class="fl">Valor Serviço (€)</label>
+          <input class="fi" id="f-servico" type="number" step="0.01" placeholder="0.00" oninput="calcLiquido()">
+        </div>
+        <div class="fg">
+          <label class="fl">Montagem (€)</label>
+          <input class="fi" id="f-montagem" type="number" step="0.01" placeholder="0.00" oninput="calcLiquido()">
+        </div>
+        <div class="fg">
+          <label class="fl">Minha Parte (%)</label>
+          <input class="fi fi-pct" id="f-pct" type="number" min="1" max="100" placeholder="100" oninput="calcLiquido()">
+          <div class="pct-hint">Vazio = 100%</div>
+        </div>
+        <div class="fg">
+          <label class="fl">Líquido (€)</label>
+          <input class="fi" id="f-liquido" type="number" step="0.01" placeholder="0.00" style="color:var(--gold);font-weight:700" readonly>
+        </div>
       </div>
-      <div class="form-row single">
-        <div class="fg"><label class="fl">Líquido (€)</label><input class="fi" id="f-liquido" type="number" step="0.01" placeholder="0.00" style="color:var(--gold);font-weight:700" readonly></div>
-      </div>
+
       <div class="form-row triple">
         <div class="fg"><label class="fl">Fatura</label>
           <select class="fi" id="f-fatura">
@@ -335,9 +331,8 @@ const SENHA='Sullyanne@1';
 
 let editingId=null,activeFilter='todos',trabalhos=[],valoresOcultos=false;
 let selectedIds=new Set();
-let isDragging=false,dragStarted=false;
+let isDragging=false;
 
-// LOGIN
 function entrar(){
   const s=document.getElementById('login-senha').value;
   if(s===SENHA){
@@ -372,6 +367,15 @@ const fmt=v=>'€'+parseFloat(v||0).toLocaleString('pt-BR',{minimumFractionDigit
 const fmtDate=d=>d?d.split('-').reverse().join('/'):'—';
 const flag=p=>p==='FR'?'🇫🇷':p==='IT'?'🇮🇹':'🌍';
 
+// CÁLCULO
+function calcLiquido(){
+  const s=parseFloat(document.getElementById('f-servico').value)||0;
+  const m=parseFloat(document.getElementById('f-montagem').value)||0;
+  const pct=parseFloat(document.getElementById('f-pct').value)||100;
+  const liquido=(s+m)*(pct/100);
+  document.getElementById('f-liquido').value=liquido.toFixed(2);
+}
+
 // SELEÇÃO
 function toggleSelect(id,tr){
   if(selectedIds.has(id)){selectedIds.delete(id);tr.classList.remove('selected');}
@@ -379,48 +383,42 @@ function toggleSelect(id,tr){
   updateBulkBar();
 }
 function updateBulkBar(){
-  const bar=document.getElementById('bulk-bar');
   const n=selectedIds.size;
   document.getElementById('bulk-count').textContent=n+' '+(n===1?'selecionado':'selecionados');
-  bar.classList.toggle('visible',n>0);
+  document.getElementById('bulk-bar').classList.toggle('visible',n>0);
 }
 function limparSelecao(){
   selectedIds.clear();
   document.querySelectorAll('tbody tr.selected').forEach(r=>r.classList.remove('selected'));
   updateBulkBar();
 }
-
 async function bulkUpdate(campo,valor){
   if(!selectedIds.size)return;
-  const ids=Array.from(selectedIds);
-  await sb.from('TRABALHOS').update({[campo]:valor}).in('id',ids);
+  await sb.from('TRABALHOS').update({[campo]:valor}).in('id',Array.from(selectedIds));
   limparSelecao();
   await carregarDados();
 }
 
-// DRAG TO SELECT
 function setupDrag(){
   const tbody=document.getElementById('tbody');
   tbody.addEventListener('mousedown',e=>{
-    const tr=e.target.closest('tr');
-    if(!tr)return;
     if(e.target.closest('button'))return;
-    isDragging=true;dragStarted=false;
-    const id=parseInt(tr.dataset.id);
-    // toggle click simples
-    if(!dragStarted){
-      toggleSelect(id,tr);
-    }
+    isDragging=true;
   });
   tbody.addEventListener('mousemove',e=>{
     if(!isDragging)return;
-    dragStarted=true;
     const tr=e.target.closest('tr');
     if(!tr)return;
     const id=parseInt(tr.dataset.id);
     if(!selectedIds.has(id)){selectedIds.add(id);tr.classList.add('selected');updateBulkBar();}
   });
   document.addEventListener('mouseup',()=>{isDragging=false;});
+}
+
+function handleRowClick(e,id,tr){
+  if(e.target.closest('button'))return;
+  if(selectedIds.size>0){toggleSelect(id,tr);return;}
+  editar(id);
 }
 
 async function carregarDados(){
@@ -491,13 +489,6 @@ function renderTable(){
   setupDrag();
 }
 
-function handleRowClick(e,id,tr){
-  if(e.target.closest('button'))return;
-  // se tem selecao ativa, toggle; senão abre modal
-  if(selectedIds.size>0){toggleSelect(id,tr);return;}
-  editar(id);
-}
-
 function renderSidebar(){
   const pendPag=trabalhos.filter(t=>t.fatura==='FEITA'&&t.pagamento==='Aguardando');
   const pendFat=trabalhos.filter(t=>t.fatura!=='FEITA'&&t.pagamento!=='Pago');
@@ -538,23 +529,10 @@ function setFilter(f,el){
   render();
 }
 
-function calcServico(){
-  const total=parseFloat(document.getElementById('f-total').value)||0;
-  const pct=parseFloat(document.getElementById('f-pct').value)||100;
-  const servico=total*(pct/100);
-  document.getElementById('f-servico').value=servico?servico.toFixed(2):'';
-  calcLiquido();
-}
-function calcLiquido(){
-  const s=parseFloat(document.getElementById('f-servico').value)||0;
-  const m=parseFloat(document.getElementById('f-montagem').value)||0;
-  document.getElementById('f-liquido').value=(s+m).toFixed(2);
-}
-
 function abrirModal(){
   editingId=null;
   document.getElementById('modal-title').textContent='NOVO TRABALHO';
-  ['f-cliente','f-semana','f-data','f-marca','f-placa','f-total','f-pct','f-servico','f-montagem','f-liquido','f-nfatura','f-datafatura','f-datapag','f-notas'].forEach(id=>document.getElementById(id).value='');
+  ['f-cliente','f-semana','f-data','f-marca','f-placa','f-servico','f-montagem','f-pct','f-liquido','f-nfatura','f-datafatura','f-datapag','f-notas'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-pais').value='FR';
   document.getElementById('f-status').value='APROVADO';
   document.getElementById('f-fatura').value='NAO';
@@ -573,10 +551,9 @@ function editar(id){
   document.getElementById('f-data').value=t.data||'';
   document.getElementById('f-marca').value=t.marca||'';
   document.getElementById('f-placa').value=t.placa||'';
-  document.getElementById('f-total').value=t.servico||'';
-  document.getElementById('f-pct').value='';
   document.getElementById('f-servico').value=t.servico||'';
   document.getElementById('f-montagem').value=t.montagem||'';
+  document.getElementById('f-pct').value='';
   document.getElementById('f-liquido').value=t.liquido||'';
   document.getElementById('f-status').value=t.status||'APROVADO';
   document.getElementById('f-fatura').value=t.fatura||'NAO';
