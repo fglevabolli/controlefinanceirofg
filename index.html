@@ -97,10 +97,7 @@ tbody td{padding:0.7rem 1rem;white-space:nowrap;}
 .pais-row{display:flex;justify-content:space-between;font-size:0.72rem;padding:0.25rem 0;}
 .pais-row-label{color:var(--muted);}
 .pais-bar{height:3px;background:var(--border);margin-top:0.7rem;}
-
-/* BLUR */
 body.valores-ocultos .valor-sensivel{filter:blur(6px);user-select:none;}
-
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;}
 .overlay.open{opacity:1;pointer-events:all;}
 .modal{background:var(--surface);border:1px solid var(--border);width:580px;max-width:95vw;max-height:90vh;overflow-y:auto;transform:translateY(16px);transition:transform 0.25s;}
@@ -111,6 +108,7 @@ body.valores-ocultos .valor-sensivel{filter:blur(6px);user-select:none;}
 .modal-body{padding:1.5rem;display:flex;flex-direction:column;gap:1rem;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;}
 .form-row.triple{grid-template-columns:1fr 1fr 1fr;}
+.form-row.quad{grid-template-columns:1fr 1fr 1fr 1fr;}
 .form-row.single{grid-template-columns:1fr;}
 .fg{display:flex;flex-direction:column;gap:0.3rem;}
 .fl{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
@@ -118,6 +116,9 @@ body.valores-ocultos .valor-sensivel{filter:blur(6px);user-select:none;}
 .fi:focus{border-color:var(--gold);}
 .fi::placeholder{color:#444;}
 select.fi option{background:var(--surface);}
+.fi-pct{border-color:rgba(201,168,76,0.4);background:rgba(201,168,76,0.05);}
+.fi-pct:focus{border-color:var(--gold);}
+.pct-hint{font-size:0.65rem;color:var(--muted);margin-top:0.2rem;}
 .modal-foot{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:0.6rem;justify-content:flex-end;}
 .btn-cancel{background:none;border:1px solid var(--border);padding:0.5rem 1.2rem;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:var(--muted);cursor:pointer;}
 .btn-save{background:var(--gold);border:none;padding:0.5rem 1.5rem;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:#0e0e0e;cursor:pointer;}
@@ -220,10 +221,17 @@ select.fi option{background:var(--surface);}
         <div class="fg"><label class="fl">Status</label>
           <select class="fi" id="f-status"><option value="APROVADO">✅ Aprovado</option><option value="AGUARDANDO">⏳ Aguardando</option></select></div>
       </div>
-      <div class="form-row triple">
-        <div class="fg"><label class="fl">Valor Serviço (€)</label><input class="fi" id="f-servico" type="number" step="0.01" placeholder="0.00" oninput="calcLiquido()"></div>
-        <div class="fg"><label class="fl">Valor Montagem (€)</label><input class="fi" id="f-montagem" type="number" step="0.01" placeholder="0.00" oninput="calcLiquido()"></div>
+      <div class="form-row quad">
+        <div class="fg"><label class="fl">Valor Total (€)</label><input class="fi" id="f-total" type="number" step="0.01" placeholder="0.00" oninput="calcServico()"></div>
+        <div class="fg"><label class="fl">Minha Parte (%)</label><input class="fi fi-pct" id="f-pct" type="number" min="1" max="100" placeholder="100" oninput="calcServico()"><div class="pct-hint">Deixe vazio = 100%</div></div>
+        <div class="fg"><label class="fl">Valor Serviço (€)</label><input class="fi" id="f-servico" type="number" step="0.01" placeholder="0.00" style="color:var(--gold)" oninput="calcLiquido()"></div>
+        <div class="fg"><label class="fl">Montagem (€)</label><input class="fi" id="f-montagem" type="number" step="0.01" placeholder="0.00" oninput="calcLiquido()"></div>
+      </div>
+      <div class="form-row">
         <div class="fg"><label class="fl">Líquido (€)</label><input class="fi" id="f-liquido" type="number" step="0.01" placeholder="0.00" style="color:var(--gold);font-weight:700" readonly></div>
+        <div class="fg"><label class="fl">Status</label>
+          <select class="fi" id="f-status2" style="display:none"></select>
+        </div>
       </div>
       <div class="form-row triple">
         <div class="fg"><label class="fl">Fatura</label>
@@ -291,6 +299,20 @@ if(sessionStorage.getItem('fg_auth')==='ok'){
 const fmt=v=>'€'+parseFloat(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const fmtDate=d=>d?d.split('-').reverse().join('/'):'—';
 const flag=p=>p==='FR'?'🇫🇷':p==='IT'?'🇮🇹':'🌍';
+
+function calcServico(){
+  const total=parseFloat(document.getElementById('f-total').value)||0;
+  const pct=parseFloat(document.getElementById('f-pct').value)||100;
+  const servico=total*(pct/100);
+  document.getElementById('f-servico').value=servico?servico.toFixed(2):'';
+  calcLiquido();
+}
+
+function calcLiquido(){
+  const s=parseFloat(document.getElementById('f-servico').value)||0;
+  const m=parseFloat(document.getElementById('f-montagem').value)||0;
+  document.getElementById('f-liquido').value=(s+m).toFixed(2);
+}
 
 async function carregarDados(){
   document.getElementById('loading-msg').style.display='block';
@@ -388,7 +410,7 @@ function setFilter(f,el){
 function abrirModal(){
   editingId=null;
   document.getElementById('modal-title').textContent='NOVO TRABALHO';
-  ['f-cliente','f-semana','f-data','f-marca','f-placa','f-servico','f-montagem','f-liquido','f-nfatura','f-datafatura','f-datapag','f-notas'].forEach(id=>document.getElementById(id).value='');
+  ['f-cliente','f-semana','f-data','f-marca','f-placa','f-total','f-pct','f-servico','f-montagem','f-liquido','f-nfatura','f-datafatura','f-datapag','f-notas'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-pais').value='FR';
   document.getElementById('f-status').value='APROVADO';
   document.getElementById('f-fatura').value='NAO';
@@ -407,6 +429,8 @@ function editar(id){
   document.getElementById('f-data').value=t.data||'';
   document.getElementById('f-marca').value=t.marca||'';
   document.getElementById('f-placa').value=t.placa||'';
+  document.getElementById('f-total').value=t.servico||'';
+  document.getElementById('f-pct').value='';
   document.getElementById('f-servico').value=t.servico||'';
   document.getElementById('f-montagem').value=t.montagem||'';
   document.getElementById('f-liquido').value=t.liquido||'';
@@ -422,12 +446,6 @@ function editar(id){
 
 function fecharModal(){document.getElementById('overlay').classList.remove('open');}
 function fecharOverlay(e){if(e.target===document.getElementById('overlay'))fecharModal();}
-
-function calcLiquido(){
-  const s=parseFloat(document.getElementById('f-servico').value)||0;
-  const m=parseFloat(document.getElementById('f-montagem').value)||0;
-  document.getElementById('f-liquido').value=(s+m).toFixed(2);
-}
 
 async function salvar(){
   const t={
