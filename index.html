@@ -267,6 +267,34 @@ select.fi option{background:var(--surface);}
     </div>
   </div>
   <div class="bulk-sep"></div>
+  <div class="bulk-group">
+    <div class="bulk-group-label">Recebimento</div>
+    <div class="bulk-actions">
+      <button class="bulk-btn blue" onclick="bulkUpdate('recebimento','Bonifico')">💳 Bonifico</button>
+      <button class="bulk-btn" style="color:var(--purple)" onclick="bulkUpdate('recebimento','Dinheiro')">💵 Dinheiro</button>
+    </div>
+  </div>
+  <div class="bulk-sep"></div>
+  <button class="bulk-cancel" onclick="limparSelecao()">✕ Cancelar</button>
+</div>
+  <div class="bulk-sep"></div>
+  <div class="bulk-group">
+    <div class="bulk-group-label">Fatura</div>
+    <div class="bulk-actions">
+      <button class="bulk-btn green" onclick="bulkUpdate('fatura','FEITA')">📄 Emitida</button>
+      <button class="bulk-btn red" onclick="bulkUpdate('fatura','NAO')">➖ Não emitida</button>
+      <button class="bulk-btn" onclick="bulkUpdate('fatura','NA')">— N/A</button>
+    </div>
+  </div>
+  <div class="bulk-sep"></div>
+  <div class="bulk-group">
+    <div class="bulk-group-label">Pagamento</div>
+    <div class="bulk-actions">
+      <button class="bulk-btn green" onclick="bulkUpdate('pagamento','Pago')">💰 Recebido</button>
+      <button class="bulk-btn blue" onclick="bulkUpdate('pagamento','Aguardando')">⏳ Aguardando</button>
+    </div>
+  </div>
+  <div class="bulk-sep"></div>
   <button class="bulk-cancel" onclick="limparSelecao()">✕ Cancelar</button>
 </div>
 
@@ -703,3 +731,4 @@ async function remover(id){
 </script>
 </body>
 </html>
+
