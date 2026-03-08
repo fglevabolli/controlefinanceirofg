@@ -277,26 +277,6 @@ select.fi option{background:var(--surface);}
   <div class="bulk-sep"></div>
   <button class="bulk-cancel" onclick="limparSelecao()">✕ Cancelar</button>
 </div>
-  <div class="bulk-sep"></div>
-  <div class="bulk-group">
-    <div class="bulk-group-label">Fatura</div>
-    <div class="bulk-actions">
-      <button class="bulk-btn green" onclick="bulkUpdate('fatura','FEITA')">📄 Emitida</button>
-      <button class="bulk-btn red" onclick="bulkUpdate('fatura','NAO')">➖ Não emitida</button>
-      <button class="bulk-btn" onclick="bulkUpdate('fatura','NA')">— N/A</button>
-    </div>
-  </div>
-  <div class="bulk-sep"></div>
-  <div class="bulk-group">
-    <div class="bulk-group-label">Pagamento</div>
-    <div class="bulk-actions">
-      <button class="bulk-btn green" onclick="bulkUpdate('pagamento','Pago')">💰 Recebido</button>
-      <button class="bulk-btn blue" onclick="bulkUpdate('pagamento','Aguardando')">⏳ Aguardando</button>
-    </div>
-  </div>
-  <div class="bulk-sep"></div>
-  <button class="bulk-cancel" onclick="limparSelecao()">✕ Cancelar</button>
-</div>
 
 <div class="dup-overlay" id="dup-overlay">
   <div class="dup-box">
@@ -600,7 +580,6 @@ function renderSidebar(){
   pendPag.forEach(t=>{h+=`<div class="fatura-item"><div class="fi-top"><div class="fi-cliente">${flag(t.pais)} ${t.marca} · ${t.placa}</div><div class="fi-val valor-sensivel">${fmt(t.liquido)}</div></div><div class="fi-detail">${t.cliente} · S${t.semana} · Nº${t.nfatura}</div></div>`;});
   document.getElementById('faturas-list').innerHTML=h;
 
-  // FORMA DE RECEBIMENTO
   const pagos=trabalhos.filter(t=>t.pagamento==='Pago');
   const bonif=pagos.filter(t=>t.recebimento==='Bonifico').reduce((s,t)=>s+(t.liquido||0),0);
   const dinh=pagos.filter(t=>t.recebimento==='Dinheiro').reduce((s,t)=>s+(t.liquido||0),0);
@@ -731,4 +710,3 @@ async function remover(id){
 </script>
 </body>
 </html>
-
