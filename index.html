@@ -45,7 +45,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .ftab:hover:not(.active){color:var(--text);}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
 .stat{background:var(--surface);padding:1.2rem 1.5rem;}
-.stat-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem;display:flex;align-items:center;justify-content:space-between;}
+.stat-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem;}
 .stat-val{font-family:'Syne',sans-serif;font-weight:800;font-size:1.9rem;line-height:1;transition:filter 0.3s;}
 .stat-val.green{color:var(--green);}
 .stat-val.amber{color:var(--amber);}
@@ -79,6 +79,7 @@ tbody td{padding:0.7rem 1rem;white-space:nowrap;user-select:none;}
 .badge-amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(251,191,36,0.2);}
 .badge-red{background:var(--red-bg);color:var(--red);border:1px solid rgba(248,113,113,0.2);}
 .badge-blue{background:rgba(96,165,250,0.08);color:var(--blue);border:1px solid rgba(96,165,250,0.2);}
+.badge-muted{background:rgba(102,102,102,0.1);color:var(--muted);border:1px solid rgba(102,102,102,0.2);}
 .dot{width:5px;height:5px;border-radius:50%;display:inline-block;}
 .dot-green{background:var(--green);}
 .dot-amber{background:var(--amber);}
@@ -118,7 +119,6 @@ body.valores-ocultos .valor-sensivel{filter:blur(6px);user-select:none;}
 .bulk-sep{width:1px;height:40px;background:var(--border);align-self:center;}
 .bulk-cancel{background:none;border:none;color:var(--muted);font-size:0.75rem;cursor:pointer;padding:0.3rem 0.5rem;font-family:'DM Mono',monospace;}
 .bulk-cancel:hover{color:var(--red);}
-/* MODAL DUPLICADO */
 .dup-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;}
 .dup-overlay.open{opacity:1;pointer-events:all;}
 .dup-box{background:var(--surface);border:1px solid var(--amber);padding:2rem;width:420px;max-width:95vw;}
@@ -148,6 +148,13 @@ select.fi option{background:var(--surface);}
 .fi-pct{border-color:rgba(201,168,76,0.4);background:rgba(201,168,76,0.05);}
 .fi-pct:focus{border-color:var(--gold);}
 .pct-hint{font-size:0.65rem;color:var(--muted);margin-top:0.2rem;}
+/* CLIENTE DROPDOWN */
+.cliente-wrap{position:relative;}
+.cliente-dropdown{position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1px solid var(--gold);z-index:50;max-height:200px;overflow-y:auto;display:none;}
+.cliente-dropdown.open{display:block;}
+.cliente-opt{padding:0.5rem 0.8rem;font-size:0.82rem;cursor:pointer;transition:background 0.1s;}
+.cliente-opt:hover{background:var(--card);}
+.cliente-opt.novo{color:var(--gold);border-top:1px solid var(--border);}
 .modal-foot{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:0.6rem;justify-content:flex-end;}
 .btn-cancel{background:none;border:1px solid var(--border);padding:0.5rem 1.2rem;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:var(--muted);cursor:pointer;}
 .btn-save{background:var(--gold);border:none;padding:0.5rem 1.5rem;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:#0e0e0e;cursor:pointer;}
@@ -238,6 +245,7 @@ select.fi option{background:var(--surface);}
     <div class="bulk-actions">
       <button class="bulk-btn green" onclick="bulkUpdate('fatura','FEITA')">📄 Emitida</button>
       <button class="bulk-btn red" onclick="bulkUpdate('fatura','NAO')">➖ Não emitida</button>
+      <button class="bulk-btn" onclick="bulkUpdate('fatura','NA')">— N/A</button>
     </div>
   </div>
   <div class="bulk-sep"></div>
@@ -252,11 +260,10 @@ select.fi option{background:var(--surface);}
   <button class="bulk-cancel" onclick="limparSelecao()">✕ Cancelar</button>
 </div>
 
-<!-- AVISO DUPLICADO -->
 <div class="dup-overlay" id="dup-overlay">
   <div class="dup-box">
     <div class="dup-title">⚠ Serviço já presente</div>
-    <div class="dup-msg" id="dup-msg">Já existe um registro com os mesmos dados. Tem certeza que quer adicionar mesmo assim?</div>
+    <div class="dup-msg" id="dup-msg"></div>
     <div class="dup-btns">
       <button class="dup-cancel" onclick="fecharDup()">Cancelar</button>
       <button class="dup-confirm" onclick="confirmarSalvar()">Salvar mesmo assim</button>
@@ -279,11 +286,17 @@ select.fi option{background:var(--surface);}
             <option value="OUT">🌍 Outro</option>
           </select>
         </div>
-        <div class="fg"><label class="fl">Cliente / Local</label><input class="fi" id="f-cliente" placeholder="Ex: PDR TEAM"></div>
+        <div class="fg">
+          <label class="fl">Cliente</label>
+          <div class="cliente-wrap">
+            <input class="fi" id="f-cliente" placeholder="Selecione ou digite..." autocomplete="off" oninput="filtrarClientes()" onfocus="abrirDropdown()" onblur="fecharDropdownDelay()">
+            <div class="cliente-dropdown" id="cliente-dropdown"></div>
+          </div>
+        </div>
       </div>
       <div class="form-row triple">
-        <div class="fg"><label class="fl">Semana</label><input class="fi" id="f-semana" type="number" placeholder="39"></div>
-        <div class="fg"><label class="fl">Data Serviço</label><input class="fi" id="f-data" type="date"></div>
+        <div class="fg"><label class="fl">Semana</label><input class="fi" id="f-semana" type="number" placeholder="Auto"></div>
+        <div class="fg"><label class="fl">Data Serviço</label><input class="fi" id="f-data" type="date" oninput="autoSemana()"></div>
         <div class="fg"><label class="fl">Marca</label><input class="fi" id="f-marca" placeholder="Renault"></div>
       </div>
       <div class="form-row">
@@ -306,6 +319,7 @@ select.fi option{background:var(--surface);}
           <select class="fi" id="f-fatura">
             <option value="NAO">➖ Não emitida</option>
             <option value="FEITA">📄 Emitida</option>
+            <option value="NA">— Não se aplica</option>
           </select>
         </div>
         <div class="fg"><label class="fl">N° Fatura</label><input class="fi" id="f-nfatura" placeholder="40"></div>
@@ -342,6 +356,57 @@ let selectedIds=new Set(),isDragging=false;
 let anoFiltro=new Date().getFullYear().toString();
 let pendingSave=null;
 
+// CLIENTES
+let clientes=[
+  'Carrozzeria Faccio','Carrozzeria Protti','Carrozzeria Bertinazzi',
+  'Carrozzeria Marchioro','Carrozzeria Testolin','PDR TEAM',
+  'Carrozzeria Randon','Carrozzeria Cattane','AMB CITROEN','Berton Auto'
+];
+function getClientes(){
+  const extras=JSON.parse(localStorage.getItem('fg_clientes')||'[]');
+  return [...new Set([...clientes,...extras])].sort();
+}
+function salvarNovoCliente(nome){
+  const extras=JSON.parse(localStorage.getItem('fg_clientes')||'[]');
+  if(!extras.includes(nome)&&!clientes.includes(nome)){extras.push(nome);localStorage.setItem('fg_clientes',JSON.stringify(extras));}
+}
+
+function filtrarClientes(){
+  const q=document.getElementById('f-cliente').value.toLowerCase();
+  const all=getClientes().filter(c=>c.toLowerCase().includes(q));
+  renderDropdown(all,q);
+}
+function abrirDropdown(){
+  renderDropdown(getClientes(),'');
+  document.getElementById('cliente-dropdown').classList.add('open');
+}
+function fecharDropdownDelay(){setTimeout(()=>document.getElementById('cliente-dropdown').classList.remove('open'),200);}
+function renderDropdown(list,q){
+  const dd=document.getElementById('cliente-dropdown');
+  let h=list.map(c=>`<div class="cliente-opt" onmousedown="selecionarCliente('${c}')">${c}</div>`).join('');
+  if(q&&!getClientes().find(c=>c.toLowerCase()===q.toLowerCase())){
+    const nome=document.getElementById('f-cliente').value.trim();
+    if(nome) h+=`<div class="cliente-opt novo" onmousedown="adicionarCliente('${nome}')">+ Adicionar "${nome}"</div>`;
+  }
+  dd.innerHTML=h||'<div style="padding:0.5rem 0.8rem;font-size:0.75rem;color:var(--muted)">Nenhum resultado</div>';
+  dd.classList.add('open');
+}
+function selecionarCliente(nome){document.getElementById('f-cliente').value=nome;document.getElementById('cliente-dropdown').classList.remove('open');}
+function adicionarCliente(nome){salvarNovoCliente(nome);selecionarCliente(nome);}
+
+// SEMANA AUTOMÁTICA
+function getWeekNumber(d){
+  const date=new Date(d);
+  date.setHours(0,0,0,0);
+  date.setDate(date.getDate()+3-(date.getDay()+6)%7);
+  const week1=new Date(date.getFullYear(),0,4);
+  return 1+Math.round(((date.getTime()-week1.getTime())/86400000-3+(week1.getDay()+6)%7)/7);
+}
+function autoSemana(){
+  const d=document.getElementById('f-data').value;
+  if(d){document.getElementById('f-semana').value=getWeekNumber(d);}
+}
+
 function entrar(){
   const s=document.getElementById('login-senha').value;
   if(s===SENHA){sessionStorage.setItem('fg_auth','ok');document.getElementById('login-wrap').style.display='none';document.getElementById('painel').style.display='block';carregarDados();}
@@ -362,7 +427,6 @@ function calcLiquido(){
   document.getElementById('f-liquido').value=((s+m)*(pct/100)).toFixed(2);
 }
 
-// ANO FILTRO
 function getAnos(){
   const anos=new Set(trabalhos.map(t=>t.data?t.data.substring(0,4):null).filter(Boolean));
   return Array.from(anos).sort().reverse();
@@ -370,17 +434,13 @@ function getAnos(){
 function setAno(ano){
   anoFiltro=ano;
   renderStats();
-  // atualiza visual dos tabs
-  document.querySelectorAll('.ytab').forEach(t=>{
-    t.classList.toggle('active',t.dataset.ano===ano);
-  });
+  document.querySelectorAll('.ytab').forEach(t=>t.classList.toggle('active',t.dataset.ano===ano));
 }
 function filtradosPorAno(){
   if(anoFiltro==='total') return trabalhos;
   return trabalhos.filter(t=>t.data&&t.data.startsWith(anoFiltro));
 }
 
-// SELEÇÃO
 function toggleSelect(id,tr){if(selectedIds.has(id)){selectedIds.delete(id);tr.classList.remove('selected');}else{selectedIds.add(id);tr.classList.add('selected');}updateBulkBar();}
 function updateBulkBar(){const n=selectedIds.size;document.getElementById('bulk-count').textContent=n+' '+(n===1?'selecionado':'selecionados');document.getElementById('bulk-bar').classList.toggle('visible',n>0);}
 function limparSelecao(){selectedIds.clear();document.querySelectorAll('tbody tr.selected').forEach(r=>r.classList.remove('selected'));updateBulkBar();}
@@ -418,7 +478,11 @@ function filtered(){
 }
 
 function badgeServico(s){return s==='APROVADO'?`<span class="badge badge-green"><span class="dot dot-green"></span>Aprovado</span>`:`<span class="badge badge-amber"><span class="dot dot-amber"></span>Pendente</span>`;}
-function badgeFatura(f,n){return f==='FEITA'?`<span class="badge badge-green">📄 ${n||'—'}</span>`:`<span class="badge badge-red">➖ Não emitida</span>`;}
+function badgeFatura(f,n){
+  if(f==='FEITA') return `<span class="badge badge-green">📄 ${n||'—'}</span>`;
+  if(f==='NA') return `<span class="badge badge-muted">— N/A</span>`;
+  return `<span class="badge badge-red">➖ Não emitida</span>`;
+}
 function badgePagamento(p){return p==='Pago'?`<span class="badge badge-green"><span class="dot dot-green"></span>Recebido</span>`:`<span class="badge badge-amber"><span class="dot dot-amber"></span>Aguardando</span>`;}
 
 function renderStats(){
@@ -427,39 +491,16 @@ function renderStats(){
   const fat=periodoList.reduce((s,t)=>s+(t.liquido||0),0);
   const rec=periodoList.filter(t=>t.pagamento==='Pago').reduce((s,t)=>s+(t.liquido||0),0);
   const aReceber=all.filter(t=>t.pagamento==='Aguardando').reduce((s,t)=>s+(t.liquido||0),0);
-  const sf=all.filter(t=>t.fatura!=='FEITA'&&t.pagamento!=='Pago').length;
+  const sf=all.filter(t=>t.fatura==='NAO'&&t.pagamento!=='Pago').length;
   const pct=fat>0?Math.round(rec/fat*100):0;
-
   const anos=getAnos();
   const yearTabsHtml=`<div class="year-tabs">${anos.map(a=>`<div class="ytab${anoFiltro===a?' active':''}" data-ano="${a}" onclick="setAno('${a}')">${a}</div>`).join('')}<div class="ytab${anoFiltro==='total'?' active':''}" data-ano="total" onclick="setAno('total')">Total</div></div>`;
-
   const periodoLabel=anoFiltro==='total'?'total geral':anoFiltro;
-
   document.getElementById('stats-row').innerHTML=`
-    <div class="stat">
-      <div class="stat-label">Faturamento</div>
-      <div class="stat-val blue valor-sensivel">${fmt(fat)}</div>
-      <div class="stat-sub">${periodoLabel} · ${periodoList.length} trabalhos</div>
-      ${yearTabsHtml}
-    </div>
-    <div class="stat">
-      <div class="stat-label">Recebido</div>
-      <div class="stat-val green valor-sensivel">${fmt(rec)}</div>
-      <div class="stat-sub">${periodoLabel}</div>
-      <div class="stat-bar"><div class="stat-bar-fill" style="width:${pct}%;background:var(--green)"></div></div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">A Receber</div>
-      <div class="stat-val amber valor-sensivel">${fmt(aReceber)}</div>
-      <div class="stat-sub">${all.filter(t=>t.pagamento==='Aguardando').length} pendentes · total geral</div>
-      <div class="stat-bar"><div class="stat-bar-fill" style="width:${fat>0?Math.round(aReceber/fat*100):0}%;background:var(--amber)"></div></div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Faturas a Emitir</div>
-      <div class="stat-val ${sf>0?'red':'green'}">${sf}</div>
-      <div class="stat-sub">total geral</div>
-      <div class="stat-bar"><div class="stat-bar-fill" style="width:${sf>0?100:0}%;background:var(--red)"></div></div>
-    </div>`;
+    <div class="stat"><div class="stat-label">Faturamento</div><div class="stat-val blue valor-sensivel">${fmt(fat)}</div><div class="stat-sub">${periodoLabel} · ${periodoList.length} trabalhos</div>${yearTabsHtml}</div>
+    <div class="stat"><div class="stat-label">Recebido</div><div class="stat-val green valor-sensivel">${fmt(rec)}</div><div class="stat-sub">${periodoLabel}</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${pct}%;background:var(--green)"></div></div></div>
+    <div class="stat"><div class="stat-label">A Receber</div><div class="stat-val amber valor-sensivel">${fmt(aReceber)}</div><div class="stat-sub">${all.filter(t=>t.pagamento==='Aguardando').length} pendentes · total geral</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${fat>0?Math.round(aReceber/fat*100):0}%;background:var(--amber)"></div></div></div>
+    <div class="stat"><div class="stat-label">Faturas a Emitir</div><div class="stat-val ${sf>0?'red':'green'}">${sf}</div><div class="stat-sub">total geral</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${sf>0?100:0}%;background:var(--red)"></div></div></div>`;
 }
 
 function renderTable(){
@@ -485,10 +526,11 @@ function renderTable(){
 }
 
 function renderSidebar(){
+  // pendências: só fatura NAO (não emitida) E pagamento aguardando — exclui NA
+  const pendFat=trabalhos.filter(t=>t.fatura==='NAO'&&t.pagamento!=='Pago');
   const pendPag=trabalhos.filter(t=>t.fatura==='FEITA'&&t.pagamento==='Aguardando');
-  const pendFat=trabalhos.filter(t=>t.fatura!=='FEITA'&&t.pagamento!=='Pago');
   let h='';
-  if(!pendPag.length&&!pendFat.length) h='<div style="font-size:0.75rem;color:var(--muted)">Tudo em ordem ✓</div>';
+  if(!pendFat.length&&!pendPag.length) h='<div style="font-size:0.75rem;color:var(--muted)">Tudo em ordem ✓</div>';
   pendFat.forEach(t=>{h+=`<div class="fatura-item urgent"><div class="fi-top"><div class="fi-cliente">${flag(t.pais)} ${t.marca} · ${t.placa}</div><div class="fi-val urgent valor-sensivel">${fmt(t.liquido)}</div></div><div class="fi-detail">${t.cliente} · S${t.semana} · Fatura não emitida</div></div>`;});
   pendPag.forEach(t=>{h+=`<div class="fatura-item"><div class="fi-top"><div class="fi-cliente">${flag(t.pais)} ${t.marca} · ${t.placa}</div><div class="fi-val valor-sensivel">${fmt(t.liquido)}</div></div><div class="fi-detail">${t.cliente} · S${t.semana} · Nº${t.nfatura}</div></div>`;});
   document.getElementById('faturas-list').innerHTML=h;
@@ -556,7 +598,7 @@ function fecharOverlay(e){if(e.target===document.getElementById('overlay'))fecha
 function fecharDup(){document.getElementById('dup-overlay').classList.remove('open');pendingSave=null;}
 
 function buildPayload(){
-  return {
+  return{
     pais:document.getElementById('f-pais').value,
     cliente:document.getElementById('f-cliente').value.trim(),
     semana:parseInt(document.getElementById('f-semana').value)||0,
@@ -579,27 +621,22 @@ function buildPayload(){
 async function salvar(){
   const t=buildPayload();
   if(!t.cliente||!t.placa){alert('Preencha pelo menos cliente e placa.');return;}
-  // verificar duplicado só em novo registo
   if(!editingId){
-    const dup=trabalhos.find(x=>
-      x.placa===t.placa&&
-      x.cliente===t.cliente&&
-      x.semana===t.semana&&
-      x.marca===t.marca&&
-      x.data===t.data
-    );
+    const dup=trabalhos.find(x=>x.placa===t.placa&&x.cliente===t.cliente&&x.semana===t.semana&&x.marca===t.marca&&x.data===t.data);
     if(dup){
       document.getElementById('dup-msg').textContent=`Já existe um registo para ${t.marca} · ${t.placa} do cliente ${t.cliente} na semana ${t.semana}. Quer salvar mesmo assim?`;
       document.getElementById('dup-overlay').classList.add('open');
-      pendingSave=t;
-      return;
+      pendingSave=t;return;
     }
   }
+  // salvar novo cliente se necessário
+  if(t.cliente) salvarNovoCliente(t.cliente);
   await executarSalvar(t);
 }
 
 async function confirmarSalvar(){
   if(!pendingSave)return;
+  if(pendingSave.cliente) salvarNovoCliente(pendingSave.cliente);
   fecharDup();
   await executarSalvar(pendingSave);
 }
