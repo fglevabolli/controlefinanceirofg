@@ -18,6 +18,8 @@
   --purple:#7c3aed;
 }
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+
+/* ── LOGIN ── */
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;}
 .login-box{background:var(--surface);border:1px solid var(--border);padding:2.5rem;width:360px;box-shadow:0 4px 24px rgba(0,0,0,0.06);}
 .login-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:0.06em;margin-bottom:0.3rem;}
@@ -29,12 +31,16 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .login-btn{background:var(--gold);color:#fff;border:none;padding:0.7rem;font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;width:100%;letter-spacing:0.05em;}
 .login-btn:hover{background:#a07820;}
 .login-error{font-size:0.75rem;color:var(--red);margin-top:0.8rem;display:none;}
+
+/* ── TOPBAR ── */
 .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2rem;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
 .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;letter-spacing:0.06em;}
 .logo span{color:var(--gold);}
 .topbar-right{display:flex;gap:0.6rem;align-items:center;}
 .btn-add{background:var(--gold);color:#fff;border:none;padding:0.4rem 1rem;font-family:'Syne',sans-serif;font-weight:700;font-size:0.75rem;cursor:pointer;}
 .btn-add:hover{background:#a07820;}
+.btn-lote{background:var(--surface);color:var(--gold);border:1px solid var(--gold);padding:0.4rem 1rem;font-family:'Syne',sans-serif;font-weight:700;font-size:0.75rem;cursor:pointer;transition:all 0.15s;}
+.btn-lote:hover{background:rgba(184,146,42,0.07);}
 .btn-logout{background:none;border:1px solid var(--border);padding:0.3rem 0.8rem;font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted);cursor:pointer;}
 .btn-logout:hover{color:var(--text);}
 .btn-eye{background:none;border:1px solid var(--border);padding:0.3rem 0.7rem;color:var(--muted);cursor:pointer;font-size:1rem;line-height:1;transition:all 0.15s;}
@@ -44,6 +50,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .ftab{background:var(--card);border:1px solid var(--border);padding:0.3rem 0.8rem;font-size:0.72rem;font-family:'DM Mono',monospace;cursor:pointer;color:var(--muted);transition:all 0.15s;}
 .ftab.active{background:var(--text);color:var(--bg);}
 .ftab:hover:not(.active){color:var(--text);}
+
+/* ── STATS ── */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
 .stat{background:var(--surface);padding:1.2rem 1.5rem;}
 .stat-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem;}
@@ -60,6 +68,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .ytab{font-family:'DM Mono',monospace;font-size:0.58rem;padding:0.15rem 0.45rem;background:var(--bg);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all 0.15s;}
 .ytab.active{background:var(--gold);color:#fff;border-color:var(--gold);}
 .ytab:hover:not(.active){color:var(--text);}
+
+/* ── LAYOUT ── */
 .layout{display:grid;grid-template-columns:1fr 300px;}
 .main-area{border-right:1px solid var(--border);}
 .section-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:0.8rem;flex-wrap:wrap;}
@@ -71,6 +81,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .sort-btn{background:var(--bg);border:1px solid var(--border);padding:0.3rem 0.7rem;font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .sort-btn.active{background:var(--text);color:var(--bg);border-color:var(--text);}
 .sort-btn:hover:not(.active){color:var(--text);}
+
+/* ── TABLE ── */
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:0.78rem;}
 thead th{padding:0.6rem 1rem;text-align:left;font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border);background:var(--card);white-space:nowrap;}
@@ -92,6 +104,8 @@ tbody td{padding:0.7rem 1rem;white-space:nowrap;user-select:none;}
 .dot-amber{background:var(--amber);}
 .dot-red{background:var(--red);}
 .novo-tag{font-family:'DM Mono',monospace;font-size:0.55rem;background:rgba(184,146,42,0.12);color:var(--gold);border:1px solid rgba(184,146,42,0.3);padding:0.1rem 0.35rem;margin-left:0.4rem;vertical-align:middle;}
+
+/* ── SIDEBAR ── */
 .sidebar{padding:1.5rem;}
 .sb-title{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);}
 .sidebar-block{margin-bottom:2rem;}
@@ -116,7 +130,11 @@ tbody td{padding:0.7rem 1rem;white-space:nowrap;user-select:none;}
 .pais-row{display:flex;justify-content:space-between;font-size:0.72rem;padding:0.25rem 0;}
 .pais-row-label{color:var(--muted);}
 .pais-bar{height:3px;background:var(--border);margin-top:0.7rem;}
+
+/* ── OCULTAR VALORES ── */
 body.valores-ocultos .valor-sensivel{filter:blur(6px);user-select:none;}
+
+/* ── BULK BAR ── */
 .bulk-bar{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface);border:1px solid var(--border);padding:0.8rem 1.2rem;display:flex;align-items:center;gap:1.2rem;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:200;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;}
 .bulk-bar.visible{transform:translateX(-50%) translateY(0);}
 .bulk-count{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--gold);padding-right:1rem;border-right:1px solid var(--border);}
@@ -128,6 +146,8 @@ body.valores-ocultos .valor-sensivel{filter:blur(6px);user-select:none;}
 .bulk-sep{width:1px;height:40px;background:var(--border);align-self:center;}
 .bulk-cancel{background:none;border:none;color:var(--muted);font-size:0.75rem;cursor:pointer;padding:0.3rem 0.5rem;font-family:'DM Mono',monospace;}
 .bulk-cancel:hover{color:var(--red);}
+
+/* ── MODAL INDIVIDUAL ── */
 .dup-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;}
 .dup-overlay.open{opacity:1;pointer-events:all;}
 .dup-box{background:var(--surface);border:1px solid var(--amber);padding:2rem;width:420px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,0.12);}
@@ -136,11 +156,12 @@ body.valores-ocultos .valor-sensivel{filter:blur(6px);user-select:none;}
 .dup-btns{display:flex;gap:0.6rem;justify-content:flex-end;}
 .dup-cancel{background:none;border:1px solid var(--border);padding:0.5rem 1.2rem;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:var(--muted);cursor:pointer;}
 .dup-confirm{background:var(--amber);border:none;padding:0.5rem 1.2rem;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:#fff;cursor:pointer;}
+
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;}
 .overlay.open{opacity:1;pointer-events:all;}
 .modal{background:var(--surface);border:1px solid var(--border);width:580px;max-width:95vw;max-height:90vh;overflow-y:auto;transform:translateY(16px);transition:transform 0.25s;box-shadow:0 8px 32px rgba(0,0,0,0.12);}
 .overlay.open .modal{transform:translateY(0);}
-.modal-head{background:var(--card);padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;}
+.modal-head{background:var(--card);padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10;}
 .modal-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;}
 .modal-close{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;}
 .modal-body{padding:1.5rem;display:flex;flex-direction:column;gap:1rem;}
@@ -169,11 +190,89 @@ select.fi option{background:var(--surface);}
 .btn-save:hover{background:#a07820;}
 .empty{padding:3rem;text-align:center;color:var(--muted);font-size:0.82rem;}
 .loading{padding:3rem;text-align:center;color:var(--muted);font-size:0.82rem;}
-@media(max-width:900px){.layout{grid-template-columns:1fr;}.stats{grid-template-columns:1fr 1fr;}}
+
+/* ══════════════════════════════════════════
+   MODAL LOTE
+══════════════════════════════════════════ */
+.lote-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:150;display:flex;align-items:flex-start;justify-content:center;padding-top:3vh;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+.lote-overlay.open{opacity:1;pointer-events:all;}
+.lote-modal{background:var(--surface);border:1px solid var(--border);width:900px;max-width:98vw;max-height:94vh;display:flex;flex-direction:column;box-shadow:0 12px 48px rgba(0,0,0,0.18);transform:translateY(16px);transition:transform 0.25s;}
+.lote-overlay.open .lote-modal{transform:translateY(0);}
+.lote-head{background:var(--card);padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);flex-shrink:0;}
+.lote-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;letter-spacing:0.03em;}
+.lote-title span{color:var(--gold);}
+.lote-close{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;}
+
+/* cabeçalho fixo do lote */
+.lote-cabecalho{padding:1.2rem 1.5rem;background:var(--surface);border-bottom:2px solid var(--border);flex-shrink:0;}
+.lote-cab-title{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem;}
+.lote-cab-grid{display:grid;grid-template-columns:1fr 1fr 80px 1fr 1fr 1fr;gap:0.7rem;align-items:end;}
+.lote-cab-grid .fg label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+.lote-cab-grid .fi{padding:0.5rem 0.7rem;font-size:0.8rem;}
+
+/* área de linhas (scrollable) */
+.lote-body{flex:1;overflow-y:auto;padding:0;}
+
+/* tabela de linhas */
+.lote-table-wrap{min-height:180px;}
+.lote-table{width:100%;border-collapse:collapse;}
+.lote-table thead th{padding:0.5rem 0.7rem;text-align:left;font-family:'DM Mono',monospace;font-size:0.57rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;background:var(--card);border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0;z-index:5;}
+.lote-table tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s;}
+.lote-table tbody tr:hover{background:rgba(184,146,42,0.03);}
+.lote-table tbody td{padding:0.4rem 0.5rem;vertical-align:middle;}
+
+/* inputs dentro da tabela */
+.li{background:var(--bg);border:1px solid var(--border);padding:0.38rem 0.55rem;font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text);outline:none;width:100%;}
+.li:focus{border-color:var(--gold);background:#fff;}
+.li::placeholder{color:#ccc;}
+.li-placa{text-transform:uppercase;font-family:'DM Mono',monospace;letter-spacing:0.05em;}
+.li-val{font-family:'DM Mono',monospace;}
+.li-liquido{color:var(--gold);font-weight:700;background:rgba(184,146,42,0.04);border-color:rgba(184,146,42,0.3);}
+.li-liquido:focus{border-color:var(--gold);}
+
+/* linha de totais */
+.lote-total-row td{background:var(--card);border-top:2px solid var(--border);padding:0.6rem 0.7rem;font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;color:var(--gold);}
+.lote-total-label{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted);font-weight:400;}
+
+/* botão adicionar linha */
+.lote-add-row{padding:0.8rem 1.5rem;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0;}
+.btn-add-linha{background:none;border:1px dashed var(--border);padding:0.5rem 1.2rem;font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--muted);cursor:pointer;width:100%;transition:all 0.15s;letter-spacing:0.05em;}
+.btn-add-linha:hover{border-color:var(--gold);color:var(--gold);background:rgba(184,146,42,0.03);}
+
+/* rodapé do lote */
+.lote-foot{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:0.8rem;justify-content:space-between;align-items:center;background:var(--card);flex-shrink:0;}
+.lote-foot-info{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--muted);}
+.lote-foot-info strong{color:var(--text);}
+.lote-foot-btns{display:flex;gap:0.6rem;}
+.btn-lote-cancel{background:none;border:1px solid var(--border);padding:0.5rem 1.2rem;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:var(--muted);cursor:pointer;}
+.btn-lote-save{background:var(--gold);border:none;padding:0.55rem 1.8rem;font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:800;color:#fff;cursor:pointer;letter-spacing:0.04em;transition:background 0.15s;}
+.btn-lote-save:hover{background:#a07820;}
+.btn-lote-save:disabled{background:var(--muted);cursor:not-allowed;}
+
+/* linha de erro no lote */
+.lote-linha-erro .li{border-color:var(--red)!important;background:var(--red-bg)!important;}
+.lote-linha-num{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);width:28px;text-align:center;}
+.btn-rm-linha{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0.2rem 0.4rem;transition:color 0.1s;}
+.btn-rm-linha:hover{color:var(--red);}
+
+/* toast */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--text);color:var(--bg);padding:0.7rem 1.2rem;font-family:'DM Mono',monospace;font-size:0.72rem;z-index:500;opacity:0;transform:translateY(8px);transition:all 0.25s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.success{background:var(--green);}
+.toast.error{background:var(--red);}
+
+/* progress do lote */
+.lote-progress{display:none;align-items:center;gap:0.8rem;font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted);}
+.lote-progress.show{display:flex;}
+.lote-prog-bar-wrap{width:120px;height:4px;background:var(--border);}
+.lote-prog-bar{height:100%;background:var(--gold);transition:width 0.3s;}
+
+@media(max-width:900px){.layout{grid-template-columns:1fr;}.stats{grid-template-columns:1fr 1fr;}.lote-cab-grid{grid-template-columns:1fr 1fr 1fr;}}
 </style>
 </head>
 <body>
 
+<!-- ── LOGIN ── -->
 <div class="login-wrap" id="login-wrap">
   <div class="login-box">
     <div class="login-logo">FG <span>LEVABOLLI</span></div>
@@ -185,6 +284,7 @@ select.fi option{background:var(--surface);}
   </div>
 </div>
 
+<!-- ── PAINEL ── -->
 <div id="painel" style="display:none">
 <div class="topbar">
   <div class="logo">FG <span>LEVABOLLI</span> · Finanças</div>
@@ -196,6 +296,7 @@ select.fi option{background:var(--surface);}
       <div class="ftab" onclick="setFilter('OUT',this)">🌍 Outro</div>
     </div>
     <button class="btn-eye" id="btn-eye" onclick="toggleValores()" title="Ocultar/mostrar valores">👁</button>
+    <button class="btn-lote" onclick="abrirLote()">⚡ LOTE</button>
     <button class="btn-add" onclick="abrirModal()">+ NOVO TRABALHO</button>
     <button class="btn-logout" onclick="sair()">SAIR</button>
   </div>
@@ -245,6 +346,7 @@ select.fi option{background:var(--surface);}
 </div>
 </div>
 
+<!-- ── BULK BAR ── -->
 <div class="bulk-bar" id="bulk-bar">
   <div class="bulk-count" id="bulk-count">0 selecionados</div>
   <div class="bulk-group">
@@ -283,6 +385,7 @@ select.fi option{background:var(--surface);}
   <button class="bulk-cancel" onclick="limparSelecao()">✕ Cancelar</button>
 </div>
 
+<!-- ── MODAL DUPLICADO ── -->
 <div class="dup-overlay" id="dup-overlay">
   <div class="dup-box">
     <div class="dup-title">⚠ Serviço já presente</div>
@@ -294,6 +397,7 @@ select.fi option{background:var(--surface);}
   </div>
 </div>
 
+<!-- ── MODAL INDIVIDUAL ── -->
 <div class="overlay" id="overlay" onclick="fecharOverlay(event)">
   <div class="modal">
     <div class="modal-head">
@@ -375,7 +479,124 @@ select.fi option{background:var(--surface);}
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════
+     MODAL LOTE
+══════════════════════════════════════════ -->
+<div class="lote-overlay" id="lote-overlay" onclick="fecharLoteOverlay(event)">
+  <div class="lote-modal">
+
+    <!-- cabeçalho do modal -->
+    <div class="lote-head">
+      <div class="lote-title">⚡ LANÇAMENTO EM <span>LOTE</span></div>
+      <button class="lote-close" onclick="fecharLote()">✕</button>
+    </div>
+
+    <!-- campos compartilhados -->
+    <div class="lote-cabecalho">
+      <div class="lote-cab-title">Campos compartilhados — valem para todos os carros do lote</div>
+      <div class="lote-cab-grid">
+        <div class="fg">
+          <label class="fl">País</label>
+          <div class="cliente-wrap">
+            <input class="fi" id="l-pais-input" placeholder="Selecione..." autocomplete="off"
+              oninput="filtrarPaisesLote()" onfocus="abrirDropdownPaisLote()" onblur="fecharDropdownPaisLoteDelay()">
+            <div class="cliente-dropdown" id="l-pais-dropdown"></div>
+          </div>
+        </div>
+        <div class="fg">
+          <label class="fl">Cliente</label>
+          <div class="cliente-wrap">
+            <input class="fi" id="l-cliente" placeholder="Selecione ou digite..." autocomplete="off"
+              oninput="filtrarClientesLote()" onfocus="abrirDropdownLote()" onblur="fecharDropdownLoteDelay()">
+            <div class="cliente-dropdown" id="l-cliente-dropdown"></div>
+          </div>
+        </div>
+        <div class="fg">
+          <label class="fl">Semana</label>
+          <input class="fi" id="l-semana" type="number" placeholder="14" min="1" max="53">
+        </div>
+        <div class="fg">
+          <label class="fl">Status serviço</label>
+          <select class="fi" id="l-status">
+            <option value="APROVADO">✅ Aprovado</option>
+            <option value="PENDENTE">⏳ Pendente</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Fatura</label>
+          <select class="fi" id="l-fatura">
+            <option value="NAO">➖ Não emitida</option>
+            <option value="FEITA">📄 Emitida</option>
+            <option value="NA">— Não se aplica</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Pagamento</label>
+          <select class="fi" id="l-pagamento">
+            <option value="Aguardando">⏳ Aguardando</option>
+            <option value="Pago">💰 Recebido</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- tabela de linhas (scrollable) -->
+    <div class="lote-body">
+      <div class="lote-table-wrap">
+        <table class="lote-table">
+          <thead>
+            <tr>
+              <th style="width:28px">#</th>
+              <th style="width:130px">Placa</th>
+              <th style="width:140px">Marca / Modelo</th>
+              <th style="width:105px">Serviço (€)</th>
+              <th style="width:105px">Montagem (€)</th>
+              <th style="width:70px">% Parte</th>
+              <th style="width:110px">Líquido (€)</th>
+              <th style="width:36px"></th>
+            </tr>
+          </thead>
+          <tbody id="lote-tbody"></tbody>
+          <tfoot>
+            <tr class="lote-total-row" id="lote-total-row">
+              <td colspan="6" class="lote-total-label">TOTAL DO LOTE</td>
+              <td id="lote-total-val">€ 0,00</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- botão add linha -->
+    <div class="lote-add-row">
+      <button class="btn-add-linha" onclick="adicionarLinhaLote()">+ ADICIONAR LINHA (Enter)</button>
+    </div>
+
+    <!-- rodapé -->
+    <div class="lote-foot">
+      <div style="display:flex;align-items:center;gap:1.2rem;">
+        <div class="lote-foot-info" id="lote-foot-info">0 linhas · € 0,00</div>
+        <div class="lote-progress" id="lote-progress">
+          <div class="lote-prog-bar-wrap"><div class="lote-prog-bar" id="lote-prog-bar" style="width:0%"></div></div>
+          <span id="lote-prog-text">0/0</span>
+        </div>
+      </div>
+      <div class="lote-foot-btns">
+        <button class="btn-lote-cancel" onclick="fecharLote()">Cancelar</button>
+        <button class="btn-lote-save" id="btn-lote-save" onclick="salvarLote()">SALVAR TUDO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- toast -->
+<div class="toast" id="toast"></div>
+
 <script>
+/* ════════════════════════════════════════
+   CONFIG
+════════════════════════════════════════ */
 const SUPABASE_URL='https://uepelqzulkpoipsdyivv.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVlcGVscXp1bGtwb2lwc2R5aXZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MTc5OTQsImV4cCI6MjA4ODI5Mzk5NH0.SFOpKoIOsfccxd20ZA8wh9DxoOEQmXSr2kMJ9f7BVUk';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
@@ -391,56 +612,99 @@ const paisesBase=['🇮🇹 Itália','🇫🇷 França','🌍 Outro'];
 const paisValores={'🇮🇹 Itália':'IT','🇫🇷 França':'FR','🌍 Outro':'OUT'};
 const paisLabels={'IT':'🇮🇹 Itália','FR':'🇫🇷 França','OUT':'🌍 Outro'};
 let paisAtual='IT';
+let loteAtualPais='IT';
 
-function getPaises(){const extras=JSON.parse(localStorage.getItem('fg_paises')||'[]');return [...new Set([...paisesBase,...extras])];}
-function salvarNovoPais(nome){const extras=JSON.parse(localStorage.getItem('fg_paises')||'[]');if(!extras.includes(nome)&&!paisesBase.includes(nome)){extras.push(nome);localStorage.setItem('fg_paises',JSON.stringify(extras));}}
+/* ════════════════════════════════════════
+   TOAST
+════════════════════════════════════════ */
+let toastTimer=null;
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+(type||'');
+  void t.offsetWidth;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+/* ════════════════════════════════════════
+   PAÍSES / CLIENTES helpers
+════════════════════════════════════════ */
+function getPaises(){const x=JSON.parse(localStorage.getItem('fg_paises')||'[]');return[...new Set([...paisesBase,...x])];}
+function salvarNovoPais(n){const x=JSON.parse(localStorage.getItem('fg_paises')||'[]');if(!x.includes(n)&&!paisesBase.includes(n)){x.push(n);localStorage.setItem('fg_paises',JSON.stringify(x));}}
+function getClientes(){const x=JSON.parse(localStorage.getItem('fg_clientes')||'[]');return[...new Set([...clientesBase,...x])].sort();}
+function salvarNovoCliente(n){const x=JSON.parse(localStorage.getItem('fg_clientes')||'[]');if(!x.includes(n)&&!clientesBase.includes(n)){x.push(n);localStorage.setItem('fg_clientes',JSON.stringify(x));}}
+
+const clientesBase=['Carrozzeria Faccio','Carrozzeria Protti','Carrozzeria Bertinazzi','Carrozzeria Marchioro','Carrozzeria Testolin','PDR TEAM','Carrozzeria Randon','Carrozzeria Cattane','AMB CITROEN','Berton Auto'];
+
+/* dropdown país modal individual */
 function filtrarPaises(){const q=document.getElementById('f-pais-input').value.toLowerCase();renderDropdownPais(getPaises().filter(p=>p.toLowerCase().includes(q)));}
 function abrirDropdownPais(){renderDropdownPais(getPaises());document.getElementById('pais-dropdown').classList.add('open');}
 function fecharDropdownPaisDelay(){setTimeout(()=>document.getElementById('pais-dropdown').classList.remove('open'),200);}
 function renderDropdownPais(list){
   const dd=document.getElementById('pais-dropdown');
   let h=list.map(p=>`<div class="cliente-opt" onmousedown="selecionarPais('${p}')">${p}</div>`).join('');
-  const input=document.getElementById('f-pais-input').value.trim();
-  if(input&&!getPaises().find(p=>p.toLowerCase()===input.toLowerCase()))h+=`<div class="cliente-opt novo" onmousedown="adicionarPais('${input}')">+ Adicionar "${input}"</div>`;
+  const inp=document.getElementById('f-pais-input').value.trim();
+  if(inp&&!getPaises().find(p=>p.toLowerCase()===inp.toLowerCase()))h+=`<div class="cliente-opt novo" onmousedown="adicionarPais('${inp}')">+ Adicionar "${inp}"</div>`;
   dd.innerHTML=h;dd.classList.add('open');
 }
-function selecionarPais(nome){document.getElementById('f-pais-input').value=nome;paisAtual=paisValores[nome]||'OUT';document.getElementById('pais-dropdown').classList.remove('open');}
-function adicionarPais(nome){salvarNovoPais(nome);selecionarPais(nome);}
+function selecionarPais(n){document.getElementById('f-pais-input').value=n;paisAtual=paisValores[n]||'OUT';document.getElementById('pais-dropdown').classList.remove('open');}
+function adicionarPais(n){salvarNovoPais(n);selecionarPais(n);}
 
-const clientesBase=['Carrozzeria Faccio','Carrozzeria Protti','Carrozzeria Bertinazzi','Carrozzeria Marchioro','Carrozzeria Testolin','PDR TEAM','Carrozzeria Randon','Carrozzeria Cattane','AMB CITROEN','Berton Auto'];
-function getClientes(){const extras=JSON.parse(localStorage.getItem('fg_clientes')||'[]');return [...new Set([...clientesBase,...extras])].sort();}
-function salvarNovoCliente(nome){const extras=JSON.parse(localStorage.getItem('fg_clientes')||'[]');if(!extras.includes(nome)&&!clientesBase.includes(nome)){extras.push(nome);localStorage.setItem('fg_clientes',JSON.stringify(extras));}}
+/* dropdown cliente modal individual */
 function filtrarClientes(){const q=document.getElementById('f-cliente').value.toLowerCase();renderDropdown(getClientes().filter(c=>c.toLowerCase().includes(q)));}
 function abrirDropdown(){renderDropdown(getClientes());document.getElementById('cliente-dropdown').classList.add('open');}
 function fecharDropdownDelay(){setTimeout(()=>document.getElementById('cliente-dropdown').classList.remove('open'),200);}
 function renderDropdown(list){
   const dd=document.getElementById('cliente-dropdown');
   let h=list.map(c=>`<div class="cliente-opt" onmousedown="selecionarCliente('${c}')">${c}</div>`).join('');
-  const nome=document.getElementById('f-cliente').value.trim();
-  if(nome&&!getClientes().find(c=>c.toLowerCase()===nome.toLowerCase()))h+=`<div class="cliente-opt novo" onmousedown="adicionarCliente('${nome}')">+ Adicionar "${nome}"</div>`;
+  const n=document.getElementById('f-cliente').value.trim();
+  if(n&&!getClientes().find(c=>c.toLowerCase()===n.toLowerCase()))h+=`<div class="cliente-opt novo" onmousedown="adicionarCliente('${n}')">+ Adicionar "${n}"</div>`;
   dd.innerHTML=h||'<div style="padding:0.5rem 0.8rem;font-size:0.75rem;color:var(--muted)">Nenhum resultado</div>';
   dd.classList.add('open');
 }
-function selecionarCliente(nome){document.getElementById('f-cliente').value=nome;document.getElementById('cliente-dropdown').classList.remove('open');}
-function adicionarCliente(nome){salvarNovoCliente(nome);selecionarCliente(nome);}
+function selecionarCliente(n){document.getElementById('f-cliente').value=n;document.getElementById('cliente-dropdown').classList.remove('open');}
+function adicionarCliente(n){salvarNovoCliente(n);selecionarCliente(n);}
 
+/* ════════════════════════════════════════
+   DROPDOWN PAÍS — LOTE
+════════════════════════════════════════ */
+function filtrarPaisesLote(){const q=document.getElementById('l-pais-input').value.toLowerCase();renderDropdownPaisLote(getPaises().filter(p=>p.toLowerCase().includes(q)));}
+function abrirDropdownPaisLote(){renderDropdownPaisLote(getPaises());document.getElementById('l-pais-dropdown').classList.add('open');}
+function fecharDropdownPaisLoteDelay(){setTimeout(()=>document.getElementById('l-pais-dropdown').classList.remove('open'),200);}
+function renderDropdownPaisLote(list){
+  const dd=document.getElementById('l-pais-dropdown');
+  let h=list.map(p=>`<div class="cliente-opt" onmousedown="selecionarPaisLote('${p}')">${p}</div>`).join('');
+  const inp=document.getElementById('l-pais-input').value.trim();
+  if(inp&&!getPaises().find(p=>p.toLowerCase()===inp.toLowerCase()))h+=`<div class="cliente-opt novo" onmousedown="adicionarPaisLote('${inp}')">+ Adicionar "${inp}"</div>`;
+  dd.innerHTML=h;dd.classList.add('open');
+}
+function selecionarPaisLote(n){document.getElementById('l-pais-input').value=n;loteAtualPais=paisValores[n]||'OUT';document.getElementById('l-pais-dropdown').classList.remove('open');}
+function adicionarPaisLote(n){salvarNovoPais(n);selecionarPaisLote(n);}
+
+/* ════════════════════════════════════════
+   DROPDOWN CLIENTE — LOTE
+════════════════════════════════════════ */
+function filtrarClientesLote(){const q=document.getElementById('l-cliente').value.toLowerCase();renderDropdownLote(getClientes().filter(c=>c.toLowerCase().includes(q)));}
+function abrirDropdownLote(){renderDropdownLote(getClientes());document.getElementById('l-cliente-dropdown').classList.add('open');}
+function fecharDropdownLoteDelay(){setTimeout(()=>document.getElementById('l-cliente-dropdown').classList.remove('open'),200);}
+function renderDropdownLote(list){
+  const dd=document.getElementById('l-cliente-dropdown');
+  let h=list.map(c=>`<div class="cliente-opt" onmousedown="selecionarClienteLote('${c}')">${c}</div>`).join('');
+  const n=document.getElementById('l-cliente').value.trim();
+  if(n&&!getClientes().find(c=>c.toLowerCase()===n.toLowerCase()))h+=`<div class="cliente-opt novo" onmousedown="adicionarClienteLote('${n}')">+ Adicionar "${n}"</div>`;
+  dd.innerHTML=h||'<div style="padding:0.5rem 0.8rem;font-size:0.75rem;color:var(--muted)">Nenhum resultado</div>';
+  dd.classList.add('open');
+}
+function selecionarClienteLote(n){document.getElementById('l-cliente').value=n;document.getElementById('l-cliente-dropdown').classList.remove('open');}
+function adicionarClienteLote(n){salvarNovoCliente(n);selecionarClienteLote(n);}
+
+/* ════════════════════════════════════════
+   UTILIDADES
+════════════════════════════════════════ */
 function getWeekNumber(d){const date=new Date(d);date.setHours(0,0,0,0);date.setDate(date.getDate()+3-(date.getDay()+6)%7);const week1=new Date(date.getFullYear(),0,4);return 1+Math.round(((date.getTime()-week1.getTime())/86400000-3+(week1.getDay()+6)%7)/7);}
 function autoSemana(){const d=document.getElementById('f-data').value;if(d)document.getElementById('f-semana').value=getWeekNumber(d);}
-
-function toggleRecentes(){
-  mostrarRecentes=!mostrarRecentes;
-  document.getElementById('btn-recentes').classList.toggle('active',mostrarRecentes);
-  render();
-}
-
-function entrar(){
-  const s=document.getElementById('login-senha').value;
-  if(s===SENHA){sessionStorage.setItem('fg_auth','ok');document.getElementById('login-wrap').style.display='none';document.getElementById('painel').style.display='block';carregarDados();}
-  else{document.getElementById('login-error').style.display='block';}
-}
-function sair(){sessionStorage.removeItem('fg_auth');document.getElementById('painel').style.display='none';document.getElementById('login-wrap').style.display='flex';document.getElementById('login-senha').value='';}
-function toggleValores(){valoresOcultos=!valoresOcultos;document.body.classList.toggle('valores-ocultos',valoresOcultos);const btn=document.getElementById('btn-eye');btn.textContent=valoresOcultos?'🙈':'👁';btn.classList.toggle('oculto',valoresOcultos);}
-if(sessionStorage.getItem('fg_auth')==='ok'){document.getElementById('login-wrap').style.display='none';document.getElementById('painel').style.display='block';carregarDados();}
+function toggleRecentes(){mostrarRecentes=!mostrarRecentes;document.getElementById('btn-recentes').classList.toggle('active',mostrarRecentes);render();}
 
 const fmt=v=>'€'+parseFloat(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const fmtDate=d=>d?d.split('-').reverse().join('/'):'—';
@@ -453,10 +717,28 @@ function calcLiquido(){
   document.getElementById('f-liquido').value=((s+m)*(pct/100)).toFixed(2);
 }
 
+/* ════════════════════════════════════════
+   LOGIN / AUTH
+════════════════════════════════════════ */
+function entrar(){
+  const s=document.getElementById('login-senha').value;
+  if(s===SENHA){sessionStorage.setItem('fg_auth','ok');document.getElementById('login-wrap').style.display='none';document.getElementById('painel').style.display='block';carregarDados();}
+  else{document.getElementById('login-error').style.display='block';}
+}
+function sair(){sessionStorage.removeItem('fg_auth');document.getElementById('painel').style.display='none';document.getElementById('login-wrap').style.display='flex';document.getElementById('login-senha').value='';}
+function toggleValores(){valoresOcultos=!valoresOcultos;document.body.classList.toggle('valores-ocultos',valoresOcultos);const btn=document.getElementById('btn-eye');btn.textContent=valoresOcultos?'🙈':'👁';btn.classList.toggle('oculto',valoresOcultos);}
+if(sessionStorage.getItem('fg_auth')==='ok'){document.getElementById('login-wrap').style.display='none';document.getElementById('painel').style.display='block';carregarDados();}
+
+/* ════════════════════════════════════════
+   ANOS / FILTROS
+════════════════════════════════════════ */
 function getAnos(){const anos=new Set(trabalhos.map(t=>t.data?t.data.substring(0,4):null).filter(Boolean));return Array.from(anos).sort().reverse();}
 function setAno(ano){anoFiltro=ano;renderStats();document.querySelectorAll('.ytab').forEach(t=>t.classList.toggle('active',t.dataset.ano===ano));}
 function filtradosPorAno(){if(anoFiltro==='total')return trabalhos;return trabalhos.filter(t=>t.data&&t.data.startsWith(anoFiltro));}
 
+/* ════════════════════════════════════════
+   SELEÇÃO / BULK
+════════════════════════════════════════ */
 function toggleSelect(id,tr){if(selectedIds.has(id)){selectedIds.delete(id);tr.classList.remove('selected');}else{selectedIds.add(id);tr.classList.add('selected');}updateBulkBar();}
 function updateBulkBar(){const n=selectedIds.size;document.getElementById('bulk-count').textContent=n+' '+(n===1?'selecionado':'selecionados');document.getElementById('bulk-bar').classList.toggle('visible',n>0);}
 function limparSelecao(){selectedIds.clear();document.querySelectorAll('tbody tr.selected').forEach(r=>r.classList.remove('selected'));updateBulkBar();}
@@ -470,6 +752,9 @@ function setupDrag(){
 }
 function handleRowClick(e,id,tr){if(e.target.closest('button'))return;if(selectedIds.size>0){toggleSelect(id,tr);return;}editar(id);}
 
+/* ════════════════════════════════════════
+   DADOS
+════════════════════════════════════════ */
 async function carregarDados(){
   document.getElementById('loading-msg').style.display='block';
   const{data,error}=await sb.from('TRABALHOS').select('*').order('id',{ascending:false});
@@ -478,6 +763,9 @@ async function carregarDados(){
   trabalhos=data||[];render();
 }
 
+/* ════════════════════════════════════════
+   RENDER
+════════════════════════════════════════ */
 function filtered(){
   const q=document.getElementById('search').value.toLowerCase();
   let list=trabalhos.filter(t=>{
@@ -485,7 +773,7 @@ function filtered(){
     const ms=!q||[t.cliente,t.marca,t.placa,t.semana+'',t.notas].some(f=>(f||'').toLowerCase().includes(q));
     return mf&&ms;
   });
-  if(mostrarRecentes) list=list.slice(0,10);
+  if(mostrarRecentes)list=list.slice(0,10);
   return list;
 }
 
@@ -585,6 +873,9 @@ function setFilter(f,el){
   render();
 }
 
+/* ════════════════════════════════════════
+   MODAL INDIVIDUAL — abrir / fechar
+════════════════════════════════════════ */
 function abrirModal(){
   editingId=null;paisAtual='IT';
   document.getElementById('modal-title').textContent='NOVO TRABALHO';
@@ -596,7 +887,6 @@ function abrirModal(){
   document.getElementById('f-recebimento').value='';
   document.getElementById('overlay').classList.add('open');
 }
-
 function editar(id){
   const t=trabalhos.find(x=>x.id===id);if(!t)return;
   editingId=id;
@@ -622,11 +912,13 @@ function editar(id){
   document.getElementById('f-notas').value=t.notas||'';
   document.getElementById('overlay').classList.add('open');
 }
-
 function fecharModal(){document.getElementById('overlay').classList.remove('open');}
 function fecharOverlay(e){if(e.target===document.getElementById('overlay'))fecharModal();}
 function fecharDup(){document.getElementById('dup-overlay').classList.remove('open');pendingSave=null;}
 
+/* ════════════════════════════════════════
+   SALVAR INDIVIDUAL
+════════════════════════════════════════ */
 function buildPayload(){
   return{
     pais:paisAtual,
@@ -648,7 +940,6 @@ function buildPayload(){
     notas:document.getElementById('f-notas').value.trim(),
   };
 }
-
 async function salvar(){
   const t=buildPayload();
   if(!t.cliente||!t.placa){alert('Preencha pelo menos cliente e placa.');return;}
@@ -659,23 +950,228 @@ async function salvar(){
   if(t.cliente)salvarNovoCliente(t.cliente);
   await executarSalvar(t);
 }
-
 async function confirmarSalvar(){
   if(!pendingSave)return;
   if(pendingSave.cliente)salvarNovoCliente(pendingSave.cliente);
   fecharDup();await executarSalvar(pendingSave);
 }
-
 async function executarSalvar(t){
   if(editingId){await sb.from('TRABALHOS').update(t).eq('id',editingId);}
   else{await sb.from('TRABALHOS').insert([t]);}
   fecharModal();await carregarDados();
 }
-
 async function remover(id){
   if(!confirm('Remover este trabalho?'))return;
   await sb.from('TRABALHOS').delete().eq('id',id);
   await carregarDados();
+}
+
+/* ════════════════════════════════════════
+   MODO LOTE — estado
+════════════════════════════════════════ */
+let loteLinhas=[]; // array de objetos {id, placa, marca, servico, montagem, pct, liquido}
+let loteIdCounter=0;
+
+function abrirLote(){
+  loteLinhas=[];
+  loteIdCounter=0;
+  loteAtualPais='IT';
+
+  // reset campos cabeçalho
+  document.getElementById('l-pais-input').value='🇮🇹 Itália';
+  document.getElementById('l-cliente').value='';
+  document.getElementById('l-semana').value=getWeekNumber(new Date().toISOString().split('T')[0]);
+  document.getElementById('l-status').value='APROVADO';
+  document.getElementById('l-fatura').value='NAO';
+  document.getElementById('l-pagamento').value='Aguardando';
+
+  // começa com 3 linhas vazias
+  for(let i=0;i<3;i++) adicionarLinhaLote(false);
+
+  document.getElementById('lote-overlay').classList.add('open');
+  // foca no cliente
+  setTimeout(()=>document.getElementById('l-cliente').focus(),300);
+}
+
+function fecharLote(){
+  document.getElementById('lote-overlay').classList.remove('open');
+}
+function fecharLoteOverlay(e){if(e.target===document.getElementById('lote-overlay'))fecharLote();}
+
+/* ── adicionar linha ── */
+function adicionarLinhaLote(focusPlaca=true){
+  const id=++loteIdCounter;
+  loteLinhas.push({id,placa:'',marca:'',servico:'',montagem:'',pct:'',liquido:''});
+  renderLinhasLote();
+  if(focusPlaca){
+    setTimeout(()=>{
+      const input=document.querySelector(`#lote-linha-${id} .li-placa`);
+      if(input)input.focus();
+    },50);
+  }
+}
+
+/* ── renderizar todas as linhas ── */
+function renderLinhasLote(){
+  const tbody=document.getElementById('lote-tbody');
+  tbody.innerHTML=loteLinhas.map((l,i)=>`
+    <tr id="lote-linha-${l.id}">
+      <td class="lote-linha-num">${i+1}</td>
+      <td><input class="li li-placa" value="${l.placa}" placeholder="FR 123 AB"
+        oninput="updateLinha(${l.id},'placa',this.value.toUpperCase());this.value=this.value.toUpperCase()"
+        onkeydown="loteKeyDown(event,${l.id},'placa')"></td>
+      <td><input class="li" value="${l.marca}" placeholder="Renault, Peugeot..."
+        oninput="updateLinha(${l.id},'marca',this.value)"
+        onkeydown="loteKeyDown(event,${l.id},'marca')"></td>
+      <td><input class="li li-val" value="${l.servico}" type="number" step="0.01" placeholder="0.00"
+        oninput="updateLinha(${l.id},'servico',this.value);calcLinhaLiquido(${l.id})"
+        onkeydown="loteKeyDown(event,${l.id},'servico')"></td>
+      <td><input class="li li-val" value="${l.montagem}" type="number" step="0.01" placeholder="0.00"
+        oninput="updateLinha(${l.id},'montagem',this.value);calcLinhaLiquido(${l.id})"
+        onkeydown="loteKeyDown(event,${l.id},'montagem')"></td>
+      <td><input class="li li-val fi-pct" value="${l.pct}" type="number" min="1" max="100" placeholder="100"
+        oninput="updateLinha(${l.id},'pct',this.value);calcLinhaLiquido(${l.id})"
+        onkeydown="loteKeyDown(event,${l.id},'pct')"
+        title="Vazio = 100%"></td>
+      <td><input class="li li-val li-liquido" id="lote-liq-${l.id}" value="${l.liquido}" type="number" step="0.01" placeholder="0.00"
+        oninput="updateLinha(${l.id},'liquido',this.value)"
+        onkeydown="loteKeyDown(event,${l.id},'liquido')"></td>
+      <td><button class="btn-rm-linha" onclick="removerLinhaLote(${l.id})" title="Remover linha">✕</button></td>
+    </tr>`).join('');
+  atualizarTotalLote();
+}
+
+/* ── atualizar campo de uma linha ── */
+function updateLinha(id,campo,valor){
+  const l=loteLinhas.find(x=>x.id===id);
+  if(l)l[campo]=valor;
+  atualizarTotalLote();
+}
+
+/* ── calcular líquido automático da linha ── */
+function calcLinhaLiquido(id){
+  const l=loteLinhas.find(x=>x.id===id);
+  if(!l)return;
+  const s=parseFloat(l.servico)||0;
+  const m=parseFloat(l.montagem)||0;
+  const pct=parseFloat(l.pct)||100;
+  const liq=((s+m)*(pct/100)).toFixed(2);
+  l.liquido=liq;
+  const input=document.getElementById('lote-liq-'+id);
+  if(input){input.value=liq;}
+  atualizarTotalLote();
+}
+
+/* ── remover linha ── */
+function removerLinhaLote(id){
+  loteLinhas=loteLinhas.filter(l=>l.id!==id);
+  renderLinhasLote();
+}
+
+/* ── total do lote ── */
+function atualizarTotalLote(){
+  const total=loteLinhas.reduce((s,l)=>s+(parseFloat(l.liquido)||0),0);
+  const n=loteLinhas.filter(l=>l.placa.trim()).length;
+  document.getElementById('lote-total-val').textContent=fmt(total);
+  document.getElementById('lote-foot-info').innerHTML=`<strong>${n}</strong> ${n===1?'carro':'carros'} · <strong>${fmt(total)}</strong>`;
+}
+
+/* ── navegação por Enter / Tab ── */
+function loteKeyDown(e,id,campo){
+  if(e.key==='Enter'){
+    e.preventDefault();
+    // se é a última coluna da última linha, adiciona nova linha
+    const isLastCol=campo==='liquido';
+    const isLastRow=loteLinhas[loteLinhas.length-1].id===id;
+    if(isLastCol&&isLastRow){
+      adicionarLinhaLote(true);
+    } else if(isLastCol){
+      // foca placa da próxima linha
+      const idx=loteLinhas.findIndex(l=>l.id===id);
+      if(idx<loteLinhas.length-1){
+        const nextId=loteLinhas[idx+1].id;
+        document.querySelector(`#lote-linha-${nextId} .li-placa`)?.focus();
+      }
+    } else {
+      // avança para próximo input na mesma linha
+      const tr=document.getElementById('lote-linha-'+id);
+      const inputs=Array.from(tr.querySelectorAll('input'));
+      const cur=inputs.findIndex(inp=>inp===document.activeElement);
+      if(cur>=0&&cur<inputs.length-1)inputs[cur+1].focus();
+    }
+  }
+}
+
+/* ════════════════════════════════════════
+   SALVAR LOTE
+════════════════════════════════════════ */
+async function salvarLote(){
+  const cliente=document.getElementById('l-cliente').value.trim();
+  const semana=parseInt(document.getElementById('l-semana').value)||0;
+  const status=document.getElementById('l-status').value;
+  const fatura=document.getElementById('l-fatura').value;
+  const pagamento=document.getElementById('l-pagamento').value;
+
+  if(!cliente){showToast('Selecione um cliente para o lote.','error');document.getElementById('l-cliente').focus();return;}
+  if(!semana){showToast('Informe a semana do lote.','error');document.getElementById('l-semana').focus();return;}
+
+  const linhasValidas=loteLinhas.filter(l=>l.placa.trim());
+  if(!linhasValidas.length){showToast('Adicione pelo menos um carro com placa.','error');return;}
+
+  // construir registros
+  const registros=linhasValidas.map(l=>({
+    pais:loteAtualPais,
+    cliente,
+    semana,
+    data:'',
+    marca:l.marca.trim(),
+    placa:l.placa.trim().toUpperCase(),
+    servico:parseFloat(l.servico)||0,
+    montagem:parseFloat(l.montagem)||0,
+    liquido:parseFloat(l.liquido)||0,
+    status,
+    fatura,
+    nfatura:'',
+    dataFatura:'',
+    pagamento,
+    recebimento:'',
+    dataPag:'',
+    notas:'',
+  }));
+
+  // salvar com progress
+  const btn=document.getElementById('btn-lote-save');
+  const prog=document.getElementById('lote-progress');
+  const progBar=document.getElementById('lote-prog-bar');
+  const progText=document.getElementById('lote-prog-text');
+
+  btn.disabled=true;
+  btn.textContent='Salvando...';
+  prog.classList.add('show');
+
+  let ok=0;let erros=0;
+  for(let i=0;i<registros.length;i++){
+    const r=registros[i];
+    const{error}=await sb.from('TRABALHOS').insert([r]);
+    if(error){erros++;console.error('Erro ao inserir:',r,error);}else{ok++;}
+    const pct=Math.round(((i+1)/registros.length)*100);
+    progBar.style.width=pct+'%';
+    progText.textContent=`${i+1}/${registros.length}`;
+  }
+
+  btn.disabled=false;
+  btn.textContent='SALVAR TUDO';
+  prog.classList.remove('show');
+  progBar.style.width='0%';
+
+  if(erros===0){
+    salvarNovoCliente(cliente);
+    showToast(`✅ ${ok} ${ok===1?'carro salvo':'carros salvos'} com sucesso!`,'success');
+    fecharLote();
+    await carregarDados();
+  } else {
+    showToast(`⚠ ${ok} salvos, ${erros} com erro. Verifique o console.`,'error');
+  }
 }
 </script>
 </body>
