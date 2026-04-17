@@ -82,6 +82,20 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .sort-btn.active{background:var(--text);color:var(--bg);border-color:var(--text);}
 .sort-btn:hover:not(.active){color:var(--text);}
 
+/* ── FILTRO CLIENTE (SOLUÇÃO 1) ── */
+.cliente-filter-wrap{position:relative;}
+.cliente-filter-input{background:var(--bg);border:1px solid var(--border);padding:0.35rem 0.7rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.78rem;outline:none;width:180px;transition:border-color 0.15s;}
+.cliente-filter-input:focus{border-color:var(--gold);}
+.cliente-filter-input::placeholder{color:var(--muted);}
+.cliente-filter-input.ativo{border-color:var(--gold);background:rgba(184,146,42,0.04);}
+.cliente-filter-dropdown{position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1px solid var(--gold);z-index:60;max-height:220px;overflow-y:auto;display:none;box-shadow:0 4px 16px rgba(0,0,0,0.10);margin-top:2px;}
+.cliente-filter-dropdown.open{display:block;}
+.cf-opt{padding:0.45rem 0.8rem;font-size:0.8rem;cursor:pointer;transition:background 0.1s;display:flex;justify-content:space-between;align-items:center;}
+.cf-opt:hover{background:var(--card);}
+.cf-opt-count{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted);}
+.cf-opt.cf-limpar{color:var(--red);border-top:1px solid var(--border);font-size:0.75rem;}
+.cf-opt.cf-limpar:hover{background:var(--red-bg);}
+
 /* ── TABLE ── */
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:0.78rem;}
@@ -191,6 +205,10 @@ select.fi option{background:var(--surface);}
 .empty{padding:3rem;text-align:center;color:var(--muted);font-size:0.82rem;}
 .loading{padding:3rem;text-align:center;color:var(--muted);font-size:0.82rem;}
 
+/* ── SEMANAS JÁ REGISTADAS (hint no modal) ── */
+.semanas-hint{font-size:0.68rem;color:var(--muted);margin-top:0.3rem;font-family:'DM Mono',monospace;min-height:1rem;}
+.semanas-hint span{background:rgba(184,146,42,0.12);color:var(--gold);border:1px solid rgba(184,146,42,0.3);padding:0.05rem 0.3rem;margin-right:0.2rem;display:inline-block;}
+
 /* ══════════════════════════════════════════
    MODAL LOTE
 ══════════════════════════════════════════ */
@@ -202,26 +220,18 @@ select.fi option{background:var(--surface);}
 .lote-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;letter-spacing:0.03em;}
 .lote-title span{color:var(--gold);}
 .lote-close{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;}
-
-/* cabeçalho fixo do lote */
 .lote-cabecalho{padding:1.2rem 1.5rem;background:var(--surface);border-bottom:2px solid var(--border);flex-shrink:0;}
 .lote-cab-title{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem;}
 .lote-cab-grid{display:grid;grid-template-columns:1fr 1fr 80px 1fr 1fr 1fr;gap:0.7rem;align-items:end;}
 .lote-cab-grid .fg label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
 .lote-cab-grid .fi{padding:0.5rem 0.7rem;font-size:0.8rem;}
-
-/* área de linhas (scrollable) */
 .lote-body{flex:1;overflow-y:auto;padding:0;}
-
-/* tabela de linhas */
 .lote-table-wrap{min-height:180px;}
 .lote-table{width:100%;border-collapse:collapse;}
 .lote-table thead th{padding:0.5rem 0.7rem;text-align:left;font-family:'DM Mono',monospace;font-size:0.57rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;background:var(--card);border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0;z-index:5;}
 .lote-table tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s;}
 .lote-table tbody tr:hover{background:rgba(184,146,42,0.03);}
 .lote-table tbody td{padding:0.4rem 0.5rem;vertical-align:middle;}
-
-/* inputs dentro da tabela */
 .li{background:var(--bg);border:1px solid var(--border);padding:0.38rem 0.55rem;font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text);outline:none;width:100%;}
 .li:focus{border-color:var(--gold);background:#fff;}
 .li::placeholder{color:#ccc;}
@@ -229,17 +239,11 @@ select.fi option{background:var(--surface);}
 .li-val{font-family:'DM Mono',monospace;}
 .li-liquido{color:var(--gold);font-weight:700;background:rgba(184,146,42,0.04);border-color:rgba(184,146,42,0.3);}
 .li-liquido:focus{border-color:var(--gold);}
-
-/* linha de totais */
 .lote-total-row td{background:var(--card);border-top:2px solid var(--border);padding:0.6rem 0.7rem;font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;color:var(--gold);}
 .lote-total-label{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted);font-weight:400;}
-
-/* botão adicionar linha */
 .lote-add-row{padding:0.8rem 1.5rem;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0;}
 .btn-add-linha{background:none;border:1px dashed var(--border);padding:0.5rem 1.2rem;font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--muted);cursor:pointer;width:100%;transition:all 0.15s;letter-spacing:0.05em;}
 .btn-add-linha:hover{border-color:var(--gold);color:var(--gold);background:rgba(184,146,42,0.03);}
-
-/* rodapé do lote */
 .lote-foot{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:0.8rem;justify-content:space-between;align-items:center;background:var(--card);flex-shrink:0;}
 .lote-foot-info{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--muted);}
 .lote-foot-info strong{color:var(--text);}
@@ -248,8 +252,6 @@ select.fi option{background:var(--surface);}
 .btn-lote-save{background:var(--gold);border:none;padding:0.55rem 1.8rem;font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:800;color:#fff;cursor:pointer;letter-spacing:0.04em;transition:background 0.15s;}
 .btn-lote-save:hover{background:#a07820;}
 .btn-lote-save:disabled{background:var(--muted);cursor:not-allowed;}
-
-/* linha de erro no lote */
 .lote-linha-erro .li{border-color:var(--red)!important;background:var(--red-bg)!important;}
 .lote-linha-num{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);width:28px;text-align:center;}
 .btn-rm-linha{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0.2rem 0.4rem;transition:color 0.1s;}
@@ -261,11 +263,32 @@ select.fi option{background:var(--surface);}
 .toast.success{background:var(--green);}
 .toast.error{background:var(--red);}
 
-/* progress do lote */
 .lote-progress{display:none;align-items:center;gap:0.8rem;font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted);}
 .lote-progress.show{display:flex;}
 .lote-prog-bar-wrap{width:120px;height:4px;background:var(--border);}
 .lote-prog-bar{height:100%;background:var(--gold);transition:width 0.3s;}
+
+/* ── EXPORTAR MODAL (SOLUÇÃO 4) ── */
+.export-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+.export-overlay.open{opacity:1;pointer-events:all;}
+.export-modal{background:var(--surface);border:1px solid var(--border);width:640px;max-width:95vw;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,0.12);}
+.export-head{background:var(--card);padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);flex-shrink:0;}
+.export-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;}
+.export-body{padding:1.2rem 1.5rem;overflow-y:auto;flex:1;}
+.export-filtros{display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;}
+.export-filtro-label{font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-right:0.3rem;}
+.exp-tab{background:var(--bg);border:1px solid var(--border);padding:0.25rem 0.7rem;font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);cursor:pointer;transition:all 0.15s;}
+.exp-tab.active{background:var(--text);color:var(--bg);border-color:var(--text);}
+.exp-tab:hover:not(.active){color:var(--text);}
+.export-lista{font-family:'DM Mono',monospace;font-size:0.72rem;line-height:1.7;white-space:pre-wrap;background:var(--bg);border:1px solid var(--border);padding:1rem;max-height:400px;overflow-y:auto;color:var(--text);}
+.export-lista .exp-cliente-header{color:var(--gold);font-weight:700;font-size:0.75rem;border-bottom:1px solid var(--border);padding-bottom:0.2rem;margin-bottom:0.2rem;margin-top:0.8rem;display:block;}
+.export-lista .exp-cliente-header:first-child{margin-top:0;}
+.export-lista .exp-linha{color:var(--mid);display:block;padding-left:0.5rem;}
+.export-foot{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:0.6rem;justify-content:flex-end;flex-shrink:0;}
+.btn-copiar{background:var(--gold);border:none;padding:0.5rem 1.2rem;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:#fff;cursor:pointer;}
+.btn-copiar:hover{background:#a07820;}
+.export-resumo{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);margin-bottom:0.8rem;}
+.export-resumo strong{color:var(--text);}
 
 @media(max-width:900px){.layout{grid-template-columns:1fr;}.stats{grid-template-columns:1fr 1fr;}.lote-cab-grid{grid-template-columns:1fr 1fr 1fr;}}
 </style>
@@ -310,7 +333,22 @@ select.fi option{background:var(--surface);}
       <div class="section-title" id="table-label">Todos os trabalhos</div>
       <div class="section-header-right">
         <button class="sort-btn" id="btn-recentes" onclick="toggleRecentes()">🕐 Últimos adicionados</button>
-        <input class="search-box" id="search" placeholder="Buscar placa, cliente, marca..." oninput="render()">
+
+        <!-- SOLUÇÃO 1 — Filtro por cliente -->
+        <div class="cliente-filter-wrap">
+          <input class="cliente-filter-input" id="filtro-cliente-input"
+            placeholder="👤 Filtrar cliente..."
+            autocomplete="off"
+            oninput="onFiltroClienteInput()"
+            onfocus="abrirFiltroClienteDropdown()"
+            onblur="fecharFiltroClienteDelay()">
+          <div class="cliente-filter-dropdown" id="filtro-cliente-dropdown"></div>
+        </div>
+
+        <input class="search-box" id="search" placeholder="Buscar placa, marca..." oninput="render()">
+
+        <!-- SOLUÇÃO 4 — Botão exportar -->
+        <button class="sort-btn" onclick="abrirExportar()" title="Exportar lista de registos">📋 Exportar</button>
       </div>
     </div>
     <div class="table-wrap">
@@ -416,9 +454,11 @@ select.fi option{background:var(--surface);}
         <div class="fg">
           <label class="fl">Cliente</label>
           <div class="cliente-wrap">
-            <input class="fi" id="f-cliente" placeholder="Selecione ou digite..." autocomplete="off" oninput="filtrarClientes()" onfocus="abrirDropdown()" onblur="fecharDropdownDelay()">
+            <input class="fi" id="f-cliente" placeholder="Selecione ou digite..." autocomplete="off" oninput="filtrarClientes();atualizarSemanasHint()" onfocus="abrirDropdown()" onblur="fecharDropdownDelay()">
             <div class="cliente-dropdown" id="cliente-dropdown"></div>
           </div>
+          <!-- hint de semanas já registadas -->
+          <div class="semanas-hint" id="semanas-hint"></div>
         </div>
       </div>
       <div class="form-row triple">
@@ -484,14 +524,10 @@ select.fi option{background:var(--surface);}
 ══════════════════════════════════════════ -->
 <div class="lote-overlay" id="lote-overlay" onclick="fecharLoteOverlay(event)">
   <div class="lote-modal">
-
-    <!-- cabeçalho do modal -->
     <div class="lote-head">
       <div class="lote-title">⚡ LANÇAMENTO EM <span>LOTE</span></div>
       <button class="lote-close" onclick="fecharLote()">✕</button>
     </div>
-
-    <!-- campos compartilhados -->
     <div class="lote-cabecalho">
       <div class="lote-cab-title">Campos compartilhados — valem para todos os carros do lote</div>
       <div class="lote-cab-grid">
@@ -539,8 +575,6 @@ select.fi option{background:var(--surface);}
         </div>
       </div>
     </div>
-
-    <!-- tabela de linhas (scrollable) -->
     <div class="lote-body">
       <div class="lote-table-wrap">
         <table class="lote-table">
@@ -567,13 +601,9 @@ select.fi option{background:var(--surface);}
         </table>
       </div>
     </div>
-
-    <!-- botão add linha -->
     <div class="lote-add-row">
       <button class="btn-add-linha" onclick="adicionarLinhaLote()">+ ADICIONAR LINHA (Enter)</button>
     </div>
-
-    <!-- rodapé -->
     <div class="lote-foot">
       <div style="display:flex;align-items:center;gap:1.2rem;">
         <div class="lote-foot-info" id="lote-foot-info">0 linhas · € 0,00</div>
@@ -586,6 +616,34 @@ select.fi option{background:var(--surface);}
         <button class="btn-lote-cancel" onclick="fecharLote()">Cancelar</button>
         <button class="btn-lote-save" id="btn-lote-save" onclick="salvarLote()">SALVAR TUDO</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODAL EXPORTAR (SOLUÇÃO 4)
+══════════════════════════════════════════ -->
+<div class="export-overlay" id="export-overlay" onclick="fecharExportarOverlay(event)">
+  <div class="export-modal">
+    <div class="export-head">
+      <div class="export-title">📋 Lista de Registos — Checklist</div>
+      <button class="modal-close" onclick="fecharExportar()">✕</button>
+    </div>
+    <div class="export-body">
+      <div class="export-filtros">
+        <span class="export-filtro-label">Filtrar:</span>
+        <div class="exp-tab active" onclick="setExportFiltro('todos',this)">Todos</div>
+        <div class="exp-tab" onclick="setExportFiltro('FR',this)">🇫🇷 França</div>
+        <div class="exp-tab" onclick="setExportFiltro('IT',this)">🇮🇹 Itália</div>
+        <div class="exp-tab" onclick="setExportFiltro('OUT',this)">🌍 Outro</div>
+        <div class="exp-tab" onclick="setExportFiltro('pendentes',this)">⏳ Só pendentes</div>
+      </div>
+      <div class="export-resumo" id="export-resumo"></div>
+      <div class="export-lista" id="export-lista"></div>
+    </div>
+    <div class="export-foot">
+      <button class="btn-cancel" onclick="fecharExportar()">Fechar</button>
+      <button class="btn-copiar" onclick="copiarLista()">📋 Copiar tudo</button>
     </div>
   </div>
 </div>
@@ -607,6 +665,8 @@ let selectedIds=new Set(),isDragging=false;
 let anoFiltro=new Date().getFullYear().toString();
 let pendingSave=null;
 let mostrarRecentes=false;
+let filtroClienteAtivo=''; // SOLUÇÃO 1
+let exportFiltroAtivo='todos'; // SOLUÇÃO 4
 
 const paisesBase=['🇮🇹 Itália','🇫🇷 França','🌍 Outro'];
 const paisValores={'🇮🇹 Itália':'IT','🇫🇷 França':'FR','🌍 Outro':'OUT'};
@@ -621,8 +681,7 @@ let toastTimer=null;
 function showToast(msg,type=''){
   const t=document.getElementById('toast');
   t.textContent=msg;t.className='toast '+(type||'');
-  void t.offsetWidth;
-  t.classList.add('show');
+  void t.offsetWidth;t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
 }
@@ -654,17 +713,91 @@ function adicionarPais(n){salvarNovoPais(n);selecionarPais(n);}
 /* dropdown cliente modal individual */
 function filtrarClientes(){const q=document.getElementById('f-cliente').value.toLowerCase();renderDropdown(getClientes().filter(c=>c.toLowerCase().includes(q)));}
 function abrirDropdown(){renderDropdown(getClientes());document.getElementById('cliente-dropdown').classList.add('open');}
-function fecharDropdownDelay(){setTimeout(()=>document.getElementById('cliente-dropdown').classList.remove('open'),200);}
+function fecharDropdownDelay(){setTimeout(()=>{document.getElementById('cliente-dropdown').classList.remove('open');atualizarSemanasHint();},200);}
 function renderDropdown(list){
   const dd=document.getElementById('cliente-dropdown');
-  let h=list.map(c=>`<div class="cliente-opt" onmousedown="selecionarCliente('${c}')">${c}</div>`).join('');
+  let h=list.map(c=>`<div class="cliente-opt" onmousedown="selecionarCliente('${c.replace(/'/g,"\\'")}')">${c}</div>`).join('');
   const n=document.getElementById('f-cliente').value.trim();
-  if(n&&!getClientes().find(c=>c.toLowerCase()===n.toLowerCase()))h+=`<div class="cliente-opt novo" onmousedown="adicionarCliente('${n}')">+ Adicionar "${n}"</div>`;
+  if(n&&!getClientes().find(c=>c.toLowerCase()===n.toLowerCase()))h+=`<div class="cliente-opt novo" onmousedown="adicionarCliente('${n.replace(/'/g,"\\'")}')">+ Adicionar "${n}"</div>`;
   dd.innerHTML=h||'<div style="padding:0.5rem 0.8rem;font-size:0.75rem;color:var(--muted)">Nenhum resultado</div>';
   dd.classList.add('open');
 }
-function selecionarCliente(n){document.getElementById('f-cliente').value=n;document.getElementById('cliente-dropdown').classList.remove('open');}
+function selecionarCliente(n){document.getElementById('f-cliente').value=n;document.getElementById('cliente-dropdown').classList.remove('open');atualizarSemanasHint();}
 function adicionarCliente(n){salvarNovoCliente(n);selecionarCliente(n);}
+
+/* ════════════════════════════════════════
+   HINT DE SEMANAS JÁ REGISTADAS (bónus da solução 1)
+════════════════════════════════════════ */
+function atualizarSemanasHint(){
+  const cliente=document.getElementById('f-cliente').value.trim();
+  const hint=document.getElementById('semanas-hint');
+  if(!cliente){hint.innerHTML='';return;}
+  const semanas=[...new Set(
+    trabalhos.filter(t=>t.cliente&&t.cliente.toLowerCase()===cliente.toLowerCase())
+             .map(t=>t.semana).filter(Boolean).sort((a,b)=>a-b)
+  )];
+  if(!semanas.length){hint.innerHTML='<span style="color:var(--muted)">Sem registos anteriores</span>';return;}
+  hint.innerHTML='Já registado: '+semanas.map(s=>`<span>S${s}</span>`).join('');
+}
+
+/* ════════════════════════════════════════
+   SOLUÇÃO 1 — FILTRO POR CLIENTE (barra da tabela)
+════════════════════════════════════════ */
+function getClientesUnicos(){
+  const mapa={};
+  trabalhos.forEach(t=>{
+    if(!t.cliente)return;
+    mapa[t.cliente]=(mapa[t.cliente]||0)+1;
+  });
+  return Object.entries(mapa).sort((a,b)=>a[0].localeCompare(b[0]));
+}
+
+function onFiltroClienteInput(){
+  const q=document.getElementById('filtro-cliente-input').value.toLowerCase();
+  filtroClienteAtivo='';
+  document.getElementById('filtro-cliente-input').classList.remove('ativo');
+  renderFiltroClienteDropdown(getClientesUnicos().filter(([c])=>c.toLowerCase().includes(q)));
+  render();
+}
+
+function abrirFiltroClienteDropdown(){
+  renderFiltroClienteDropdown(getClientesUnicos());
+  document.getElementById('filtro-cliente-dropdown').classList.add('open');
+}
+
+function fecharFiltroClienteDelay(){
+  setTimeout(()=>document.getElementById('filtro-cliente-dropdown').classList.remove('open'),200);
+}
+
+function renderFiltroClienteDropdown(list){
+  const dd=document.getElementById('filtro-cliente-dropdown');
+  let h='';
+  if(filtroClienteAtivo){
+    h+=`<div class="cf-opt cf-limpar" onmousedown="limparFiltroCliente()">✕ Limpar filtro</div>`;
+  }
+  h+=list.map(([c,n])=>`<div class="cf-opt" onmousedown="selecionarFiltroCliente('${c.replace(/'/g,"\\'")}')">
+    <span>${c}</span><span class="cf-opt-count">${n} reg.</span>
+  </div>`).join('');
+  if(!h)h='<div style="padding:0.5rem 0.8rem;font-size:0.75rem;color:var(--muted)">Nenhum cliente</div>';
+  dd.innerHTML=h;
+  dd.classList.add('open');
+}
+
+function selecionarFiltroCliente(nome){
+  filtroClienteAtivo=nome;
+  document.getElementById('filtro-cliente-input').value=nome;
+  document.getElementById('filtro-cliente-input').classList.add('ativo');
+  document.getElementById('filtro-cliente-dropdown').classList.remove('open');
+  render();
+}
+
+function limparFiltroCliente(){
+  filtroClienteAtivo='';
+  document.getElementById('filtro-cliente-input').value='';
+  document.getElementById('filtro-cliente-input').classList.remove('ativo');
+  document.getElementById('filtro-cliente-dropdown').classList.remove('open');
+  render();
+}
 
 /* ════════════════════════════════════════
    DROPDOWN PAÍS — LOTE
@@ -690,9 +823,9 @@ function abrirDropdownLote(){renderDropdownLote(getClientes());document.getEleme
 function fecharDropdownLoteDelay(){setTimeout(()=>document.getElementById('l-cliente-dropdown').classList.remove('open'),200);}
 function renderDropdownLote(list){
   const dd=document.getElementById('l-cliente-dropdown');
-  let h=list.map(c=>`<div class="cliente-opt" onmousedown="selecionarClienteLote('${c}')">${c}</div>`).join('');
+  let h=list.map(c=>`<div class="cliente-opt" onmousedown="selecionarClienteLote('${c.replace(/'/g,"\\'")}'">${c}</div>`).join('');
   const n=document.getElementById('l-cliente').value.trim();
-  if(n&&!getClientes().find(c=>c.toLowerCase()===n.toLowerCase()))h+=`<div class="cliente-opt novo" onmousedown="adicionarClienteLote('${n}')">+ Adicionar "${n}"</div>`;
+  if(n&&!getClientes().find(c=>c.toLowerCase()===n.toLowerCase()))h+=`<div class="cliente-opt novo" onmousedown="adicionarClienteLote('${n.replace(/'/g,"\\'")}')">+ Adicionar "${n}"</div>`;
   dd.innerHTML=h||'<div style="padding:0.5rem 0.8rem;font-size:0.75rem;color:var(--muted)">Nenhum resultado</div>';
   dd.classList.add('open');
 }
@@ -770,8 +903,10 @@ function filtered(){
   const q=document.getElementById('search').value.toLowerCase();
   let list=trabalhos.filter(t=>{
     const mf=activeFilter==='todos'||t.pais===activeFilter;
+    // SOLUÇÃO 1 — aplica filtro de cliente se activo
+    const mc=!filtroClienteAtivo||( t.cliente&&t.cliente.toLowerCase()===filtroClienteAtivo.toLowerCase());
     const ms=!q||[t.cliente,t.marca,t.placa,t.semana+'',t.notas].some(f=>(f||'').toLowerCase().includes(q));
-    return mf&&ms;
+    return mf&&mc&&ms;
   });
   if(mostrarRecentes)list=list.slice(0,10);
   return list;
@@ -869,7 +1004,7 @@ function setFilter(f,el){
   document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   const labels={todos:'Todos os trabalhos',FR:'🇫🇷 Trabalhos França',IT:'🇮🇹 Trabalhos Itália',OUT:'🌍 Outros países'};
-  document.getElementById('table-label').textContent=labels[f];
+  document.getElementById('table-label').textContent=labels[f]+(filtroClienteAtivo?' · '+filtroClienteAtivo:'');
   render();
 }
 
@@ -885,6 +1020,12 @@ function abrirModal(){
   document.getElementById('f-fatura').value='NAO';
   document.getElementById('f-pagamento').value='Aguardando';
   document.getElementById('f-recebimento').value='';
+  document.getElementById('semanas-hint').innerHTML='';
+  // pré-preenche cliente se há filtro activo
+  if(filtroClienteAtivo){
+    document.getElementById('f-cliente').value=filtroClienteAtivo;
+    atualizarSemanasHint();
+  }
   document.getElementById('overlay').classList.add('open');
 }
 function editar(id){
@@ -910,6 +1051,7 @@ function editar(id){
   document.getElementById('f-recebimento').value=t.recebimento||'';
   document.getElementById('f-datapag').value=t.dataPag||'';
   document.getElementById('f-notas').value=t.notas||'';
+  atualizarSemanasHint();
   document.getElementById('overlay').classList.add('open');
 }
 function fecharModal(){document.getElementById('overlay').classList.remove('open');}
@@ -967,51 +1109,116 @@ async function remover(id){
 }
 
 /* ════════════════════════════════════════
-   MODO LOTE — estado
+   SOLUÇÃO 4 — EXPORTAR LISTA / CHECKLIST
 ════════════════════════════════════════ */
-let loteLinhas=[]; // array de objetos {id, placa, marca, servico, montagem, pct, liquido}
+function abrirExportar(){
+  exportFiltroAtivo='todos';
+  document.querySelectorAll('.exp-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.exp-tab').classList.add('active');
+  renderExportLista();
+  document.getElementById('export-overlay').classList.add('open');
+}
+function fecharExportar(){document.getElementById('export-overlay').classList.remove('open');}
+function fecharExportarOverlay(e){if(e.target===document.getElementById('export-overlay'))fecharExportar();}
+
+function setExportFiltro(f,el){
+  exportFiltroAtivo=f;
+  document.querySelectorAll('.exp-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderExportLista();
+}
+
+function getExportLista(){
+  let list=trabalhos;
+  if(exportFiltroAtivo==='FR')list=list.filter(t=>t.pais==='FR');
+  else if(exportFiltroAtivo==='IT')list=list.filter(t=>t.pais==='IT');
+  else if(exportFiltroAtivo==='OUT')list=list.filter(t=>t.pais==='OUT');
+  else if(exportFiltroAtivo==='pendentes')list=list.filter(t=>t.pagamento==='Aguardando');
+  return list;
+}
+
+function renderExportLista(){
+  const list=getExportLista();
+
+  // agrupar por cliente
+  const porCliente={};
+  list.forEach(t=>{
+    const c=t.cliente||'(sem cliente)';
+    if(!porCliente[c])porCliente[c]=[];
+    porCliente[c].push(t);
+  });
+
+  // ordenar clientes alfabeticamente
+  const clientesOrdenados=Object.keys(porCliente).sort();
+
+  // resumo
+  document.getElementById('export-resumo').innerHTML=
+    `<strong>${list.length}</strong> registos · <strong>${clientesOrdenados.length}</strong> clientes`;
+
+  // construir HTML e texto puro (para copiar)
+  let html='';
+  let textoPlano='';
+
+  clientesOrdenados.forEach(cliente=>{
+    const items=porCliente[cliente].sort((a,b)=>(a.semana||0)-(b.semana||0));
+    html+=`<span class="exp-cliente-header">── ${cliente} (${items.length}) ──</span>`;
+    textoPlano+=`── ${cliente} (${items.length}) ──\n`;
+
+    items.forEach(t=>{
+      const semana=t.semana?`S${t.semana}`:'S?';
+      const data=fmtDate(t.data);
+      const placa=t.placa||'—';
+      const marca=t.marca||'—';
+      const pag=t.pagamento==='Pago'?'✅':'⏳';
+      const fat=t.fatura==='FEITA'?'📄':t.fatura==='NA'?'—':'➖';
+      const linha=`  ${pag} ${fat}  ${semana}  ${data}  ${marca} · ${placa}`;
+      html+=`<span class="exp-linha">${linha}</span>`;
+      textoPlano+=linha+'\n';
+    });
+    textoPlano+='\n';
+  });
+
+  document.getElementById('export-lista').innerHTML=html||'<span style="color:var(--muted)">Nenhum registo.</span>';
+  document.getElementById('export-lista').dataset.texto=textoPlano;
+}
+
+function copiarLista(){
+  const texto=document.getElementById('export-lista').dataset.texto||'';
+  navigator.clipboard.writeText(texto).then(()=>{
+    showToast('✅ Lista copiada para a área de transferência!','success');
+  }).catch(()=>{
+    showToast('Erro ao copiar. Seleciona o texto manualmente.','error');
+  });
+}
+
+/* ════════════════════════════════════════
+   MODO LOTE
+════════════════════════════════════════ */
+let loteLinhas=[];
 let loteIdCounter=0;
 
 function abrirLote(){
-  loteLinhas=[];
-  loteIdCounter=0;
-  loteAtualPais='IT';
-
-  // reset campos cabeçalho
+  loteLinhas=[];loteIdCounter=0;loteAtualPais='IT';
   document.getElementById('l-pais-input').value='🇮🇹 Itália';
   document.getElementById('l-cliente').value='';
   document.getElementById('l-semana').value=getWeekNumber(new Date().toISOString().split('T')[0]);
   document.getElementById('l-status').value='APROVADO';
   document.getElementById('l-fatura').value='NAO';
   document.getElementById('l-pagamento').value='Aguardando';
-
-  // começa com 3 linhas vazias
-  for(let i=0;i<3;i++) adicionarLinhaLote(false);
-
+  for(let i=0;i<3;i++)adicionarLinhaLote(false);
   document.getElementById('lote-overlay').classList.add('open');
-  // foca no cliente
   setTimeout(()=>document.getElementById('l-cliente').focus(),300);
 }
-
-function fecharLote(){
-  document.getElementById('lote-overlay').classList.remove('open');
-}
+function fecharLote(){document.getElementById('lote-overlay').classList.remove('open');}
 function fecharLoteOverlay(e){if(e.target===document.getElementById('lote-overlay'))fecharLote();}
 
-/* ── adicionar linha ── */
 function adicionarLinhaLote(focusPlaca=true){
   const id=++loteIdCounter;
   loteLinhas.push({id,placa:'',marca:'',servico:'',montagem:'',pct:'',liquido:''});
   renderLinhasLote();
-  if(focusPlaca){
-    setTimeout(()=>{
-      const input=document.querySelector(`#lote-linha-${id} .li-placa`);
-      if(input)input.focus();
-    },50);
-  }
+  if(focusPlaca){setTimeout(()=>{const input=document.querySelector(`#lote-linha-${id} .li-placa`);if(input)input.focus();},50);}
 }
 
-/* ── renderizar todas as linhas ── */
 function renderLinhasLote(){
   const tbody=document.getElementById('lote-tbody');
   tbody.innerHTML=loteLinhas.map((l,i)=>`
@@ -1031,8 +1238,7 @@ function renderLinhasLote(){
         onkeydown="loteKeyDown(event,${l.id},'montagem')"></td>
       <td><input class="li li-val fi-pct" value="${l.pct}" type="number" min="1" max="100" placeholder="100"
         oninput="updateLinha(${l.id},'pct',this.value);calcLinhaLiquido(${l.id})"
-        onkeydown="loteKeyDown(event,${l.id},'pct')"
-        title="Vazio = 100%"></td>
+        onkeydown="loteKeyDown(event,${l.id},'pct')" title="Vazio = 100%"></td>
       <td><input class="li li-val li-liquido" id="lote-liq-${l.id}" value="${l.liquido}" type="number" step="0.01" placeholder="0.00"
         oninput="updateLinha(${l.id},'liquido',this.value)"
         onkeydown="loteKeyDown(event,${l.id},'liquido')"></td>
@@ -1041,34 +1247,18 @@ function renderLinhasLote(){
   atualizarTotalLote();
 }
 
-/* ── atualizar campo de uma linha ── */
-function updateLinha(id,campo,valor){
-  const l=loteLinhas.find(x=>x.id===id);
-  if(l)l[campo]=valor;
-  atualizarTotalLote();
-}
+function updateLinha(id,campo,valor){const l=loteLinhas.find(x=>x.id===id);if(l)l[campo]=valor;atualizarTotalLote();}
 
-/* ── calcular líquido automático da linha ── */
 function calcLinhaLiquido(id){
-  const l=loteLinhas.find(x=>x.id===id);
-  if(!l)return;
-  const s=parseFloat(l.servico)||0;
-  const m=parseFloat(l.montagem)||0;
-  const pct=parseFloat(l.pct)||100;
-  const liq=((s+m)*(pct/100)).toFixed(2);
-  l.liquido=liq;
-  const input=document.getElementById('lote-liq-'+id);
-  if(input){input.value=liq;}
+  const l=loteLinhas.find(x=>x.id===id);if(!l)return;
+  const s=parseFloat(l.servico)||0;const m=parseFloat(l.montagem)||0;const pct=parseFloat(l.pct)||100;
+  const liq=((s+m)*(pct/100)).toFixed(2);l.liquido=liq;
+  const input=document.getElementById('lote-liq-'+id);if(input)input.value=liq;
   atualizarTotalLote();
 }
 
-/* ── remover linha ── */
-function removerLinhaLote(id){
-  loteLinhas=loteLinhas.filter(l=>l.id!==id);
-  renderLinhasLote();
-}
+function removerLinhaLote(id){loteLinhas=loteLinhas.filter(l=>l.id!==id);renderLinhasLote();}
 
-/* ── total do lote ── */
 function atualizarTotalLote(){
   const total=loteLinhas.reduce((s,l)=>s+(parseFloat(l.liquido)||0),0);
   const n=loteLinhas.filter(l=>l.placa.trim()).length;
@@ -1076,24 +1266,16 @@ function atualizarTotalLote(){
   document.getElementById('lote-foot-info').innerHTML=`<strong>${n}</strong> ${n===1?'carro':'carros'} · <strong>${fmt(total)}</strong>`;
 }
 
-/* ── navegação por Enter / Tab ── */
 function loteKeyDown(e,id,campo){
   if(e.key==='Enter'){
     e.preventDefault();
-    // se é a última coluna da última linha, adiciona nova linha
     const isLastCol=campo==='liquido';
     const isLastRow=loteLinhas[loteLinhas.length-1].id===id;
-    if(isLastCol&&isLastRow){
-      adicionarLinhaLote(true);
-    } else if(isLastCol){
-      // foca placa da próxima linha
+    if(isLastCol&&isLastRow){adicionarLinhaLote(true);}
+    else if(isLastCol){
       const idx=loteLinhas.findIndex(l=>l.id===id);
-      if(idx<loteLinhas.length-1){
-        const nextId=loteLinhas[idx+1].id;
-        document.querySelector(`#lote-linha-${nextId} .li-placa`)?.focus();
-      }
+      if(idx<loteLinhas.length-1){const nextId=loteLinhas[idx+1].id;document.querySelector(`#lote-linha-${nextId} .li-placa`)?.focus();}
     } else {
-      // avança para próximo input na mesma linha
       const tr=document.getElementById('lote-linha-'+id);
       const inputs=Array.from(tr.querySelectorAll('input'));
       const cur=inputs.findIndex(inp=>inp===document.activeElement);
@@ -1102,75 +1284,41 @@ function loteKeyDown(e,id,campo){
   }
 }
 
-/* ════════════════════════════════════════
-   SALVAR LOTE
-════════════════════════════════════════ */
 async function salvarLote(){
   const cliente=document.getElementById('l-cliente').value.trim();
   const semana=parseInt(document.getElementById('l-semana').value)||0;
   const status=document.getElementById('l-status').value;
   const fatura=document.getElementById('l-fatura').value;
   const pagamento=document.getElementById('l-pagamento').value;
-
   if(!cliente){showToast('Selecione um cliente para o lote.','error');document.getElementById('l-cliente').focus();return;}
   if(!semana){showToast('Informe a semana do lote.','error');document.getElementById('l-semana').focus();return;}
-
   const linhasValidas=loteLinhas.filter(l=>l.placa.trim());
   if(!linhasValidas.length){showToast('Adicione pelo menos um carro com placa.','error');return;}
-
-  // construir registros
   const registros=linhasValidas.map(l=>({
-    pais:loteAtualPais,
-    cliente,
-    semana,
-    data:'',
-    marca:l.marca.trim(),
-    placa:l.placa.trim().toUpperCase(),
-    servico:parseFloat(l.servico)||0,
-    montagem:parseFloat(l.montagem)||0,
-    liquido:parseFloat(l.liquido)||0,
-    status,
-    fatura,
-    nfatura:'',
-    dataFatura:'',
-    pagamento,
-    recebimento:'',
-    dataPag:'',
-    notas:'',
+    pais:loteAtualPais,cliente,semana,data:'',marca:l.marca.trim(),
+    placa:l.placa.trim().toUpperCase(),servico:parseFloat(l.servico)||0,
+    montagem:parseFloat(l.montagem)||0,liquido:parseFloat(l.liquido)||0,
+    status,fatura,nfatura:'',dataFatura:'',pagamento,recebimento:'',dataPag:'',notas:'',
   }));
-
-  // salvar com progress
   const btn=document.getElementById('btn-lote-save');
   const prog=document.getElementById('lote-progress');
   const progBar=document.getElementById('lote-prog-bar');
   const progText=document.getElementById('lote-prog-text');
-
-  btn.disabled=true;
-  btn.textContent='Salvando...';
-  prog.classList.add('show');
-
+  btn.disabled=true;btn.textContent='Salvando...';prog.classList.add('show');
   let ok=0;let erros=0;
   for(let i=0;i<registros.length;i++){
-    const r=registros[i];
-    const{error}=await sb.from('TRABALHOS').insert([r]);
-    if(error){erros++;console.error('Erro ao inserir:',r,error);}else{ok++;}
+    const{error}=await sb.from('TRABALHOS').insert([registros[i]]);
+    if(error){erros++;console.error(error);}else{ok++;}
     const pct=Math.round(((i+1)/registros.length)*100);
-    progBar.style.width=pct+'%';
-    progText.textContent=`${i+1}/${registros.length}`;
+    progBar.style.width=pct+'%';progText.textContent=`${i+1}/${registros.length}`;
   }
-
-  btn.disabled=false;
-  btn.textContent='SALVAR TUDO';
-  prog.classList.remove('show');
-  progBar.style.width='0%';
-
+  btn.disabled=false;btn.textContent='SALVAR TUDO';prog.classList.remove('show');progBar.style.width='0%';
   if(erros===0){
     salvarNovoCliente(cliente);
     showToast(`✅ ${ok} ${ok===1?'carro salvo':'carros salvos'} com sucesso!`,'success');
-    fecharLote();
-    await carregarDados();
+    fecharLote();await carregarDados();
   } else {
-    showToast(`⚠ ${ok} salvos, ${erros} com erro. Verifique o console.`,'error');
+    showToast(`⚠ ${ok} salvos, ${erros} com erro.`,'error');
   }
 }
 </script>
